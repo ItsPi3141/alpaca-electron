@@ -128,7 +128,7 @@ const stripAnsi = (str) => {
 	return str.replace(regex, "");
 };
 
-ipcMain.on("startChat", () => {
+function initChat() {
 	if (runningShell) {
 		win.webContents.send("ready");
 		return;
@@ -141,12 +141,23 @@ ipcMain.on("startChat", () => {
 		if (res.includes("llama_model_load: invalid model file") && res.includes("main: failed to load model from")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
-		} else if (res.endsWith("\n> ") && !alpacaReady) {
+		} else if (res.includes("\n>") && !alpacaReady) {
 			alpacaHalfReady = true;
 		} else if (alpacaHalfReady && !alpacaReady) {
 			alpacaReady = true;
 			win.webContents.send("ready");
 			console.log("ready!");
+		} else if (res.match(/PS [A-Z]:.*>/) && alpacaReady) {
+			console.log("restarting");
+			win.webContents.send("result", {
+				data: "\n\n<end>"
+			});
+			runningShell.kill();
+			runningShell = undefined;
+			currentPrompt = undefined;
+			alpacaReady = false;
+			alpacaHalfReady = false;
+			initChat();
 		} else if (res.endsWith("\n> ") && alpacaReady) {
 			win.webContents.send("result", {
 				data: "\n\n<end>"
@@ -158,7 +169,11 @@ ipcMain.on("startChat", () => {
 		}
 	});
 	runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", "chat.exe")}" -m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads 16 --repeat_last_n 99999\r`);
+}
+ipcMain.on("startChat", () => {
+	initChat();
 });
+
 ipcMain.on("message", (_event, { data }) => {
 	console.log(`User says: ${data}`);
 	currentPrompt = data;
