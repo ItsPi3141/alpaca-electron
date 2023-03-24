@@ -1,0 +1,30 @@
+{
+	"name": "alpaca-electron",
+	"version": "1.0.0",
+	"description": "The most user friendly way to interact with Alpaca",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "electron .",
+		"make-win": "npx electron-packager . \"Alpaca Electron\" --overwrite --platform=win32 --arch=x64 --prune=false --electron-version=17.4.11 --out=release-builds --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"pack-win": "node installers/windows/createinstaller.js",
+		"rebuild": ".\\node_modules\\.bin\\electron-rebuild"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@electron/remote": "^2.0.9",
+		"electron": "^17.4.11",
+		"electron-store": "^8.1.0",
+		"express": "^4.18.2",
+		"fs": "^0.0.1-security",
+		"node-pty-prebuilt-multiarch": "^0.10.1-pre.5",
+		"os-utils": "^0.0.14",
+		"path": "^0.12.7"
+	},
+	"devDependencies": {
+		"electron-packager": "^17.1.1",
+		"electron-rebuild": "^3.2.9",
+		"electron-winstaller": "^5.1.0"
+	}
+}
