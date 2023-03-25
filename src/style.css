@@ -576,17 +576,26 @@ input:checked + .slider:before {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: right;
+	justify-content: flex-end;
 	padding: 0.75rem 1rem;
+	gap: 0.75rem;
 }
 .dialog-button button {
 	padding: 0.5rem 1rem;
 	cursor: pointer;
-	background-color: var(--accent);
 	transition: all 0.1s;
 }
-.dialog-button button:hover {
+.dialog-button button.primary {
+	background-color: var(--accent);
+}
+.dialog-button button.primary:hover {
 	background-color: var(--secondary);
+}
+.dialog-button button.secondary {
+	background-color: var(--surface-alt);
+}
+.dialog-button button.secondary:hover {
+	background-color: var(--surface);
 }
 
 p.error-text {

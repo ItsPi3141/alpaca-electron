@@ -7,6 +7,8 @@ document.onreadystatechange = (event) => {
 	if (document.readyState == "complete") {
 		handleWindowControls();
 	}
+	document.querySelector("#path-dialog-bg > div > div.dialog-button > button.secondary").style.display = "none";
+	document.querySelector("#path-dialog-bg > div > div.dialog-title > h3").innerText = "Couldn't load model";
 	ipcRenderer.send("checkModelPath");
 };
 
@@ -14,13 +16,18 @@ ipcRenderer.on("modelPathValid", (_event, { data }) => {
 	if (data) {
 		ipcRenderer.send("startChat");
 	} else {
+		ipcRenderer.send("getCurrentModel");
 		document.getElementById("path-dialog-bg").classList.remove("hidden");
 	}
 });
 
-document.querySelector("#path-dialog-bg > div > div.dialog-button > button").addEventListener("click", () => {
+document.querySelector("#path-dialog-bg > div > div.dialog-button > button.primary").addEventListener("click", () => {
 	var path = document.querySelector("#path-dialog > input[type=text]").value.replaceAll('"', "");
 	ipcRenderer.send("checkPath", { data: path });
+});
+
+document.querySelector("#path-dialog-bg > div > div.dialog-button > button.secondary").addEventListener("click", () => {
+	document.getElementById("path-dialog-bg").classList.add("hidden");
 });
 
 ipcRenderer.on("pathIsValid", (_event, { data }) => {
@@ -464,5 +471,12 @@ document.getElementById("clear-chat").addEventListener("click", () => {
 	});
 });
 document.getElementById("change-model").addEventListener("click", () => {
+	ipcRenderer.send("getCurrentModel");
+	document.querySelector("#path-dialog-bg > div > div.dialog-button > button.secondary").style.display = "";
+	document.querySelector("#path-dialog-bg > div > div.dialog-title > h3").innerText = "Change model path";
 	document.getElementById("path-dialog-bg").classList.remove("hidden");
+});
+
+ipcRenderer.on("currentModel", (_event, { data }) => {
+	document.querySelector("#path-dialog > input[type=text]").value = data;
 });
