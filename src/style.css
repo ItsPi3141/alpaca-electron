@@ -1,22 +1,12 @@
 @font-face {
-	font-family: "Sohne";
-	src: url("fonts/Sohne-Buch.otf");
+	font-family: "IBM Plex";
+	src: url("fonts/IBM Plex/IBMPlexSans-Light.ttf");
 	font-weight: normal;
 }
 @font-face {
-	font-family: "Sohne";
-	src: url("fonts/Sohne-Halbfett.otf");
-	font-weight: bold;
-}
-@font-face {
-	font-family: "Sohne Mono";
-	src: url("fonts/SohneMono-Buch.otf");
+	font-family: "IBM Plex";
+	src: url("fonts/IBM Plex/IBMPlexSans-Regular.ttf");
 	font-weight: normal;
-}
-@font-face {
-	font-family: "Sohne Mono";
-	src: url("fonts/SohneMono-Halbfett.otf");
-	font-weight: bold;
 }
 
 :root {
@@ -65,7 +55,7 @@
 	font-size: 1rem;
 	line-height: 28px;
 	/* font-family: Sohne; */
-	font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+	font-family: "IBM Plex", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 	font-weight: normal;
 }
 h1,
@@ -75,6 +65,7 @@ h4,
 h5,
 h6 {
 	font-size: revert;
+	font-weight: bold;
 }
 
 code {
@@ -272,6 +263,7 @@ li {
 	margin-right: 16px;
 	margin-top: -32px;
 	top: 14px;
+	border-radius: 5px;
 }
 #messages > li.user-msg::before {
 	background-image: url(img/user.png);
