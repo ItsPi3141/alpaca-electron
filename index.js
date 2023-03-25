@@ -174,7 +174,7 @@ function initChat() {
 			});
 		}
 	});
-	runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", "chat.exe")}" -m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 99999\r`);
+	runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", "chat.exe")}" -m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128\r`);
 }
 ipcMain.on("startChat", () => {
 	initChat();
