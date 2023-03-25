@@ -1,6 +1,6 @@
 {
 	"name": "alpaca-electron",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "The most user friendly way to interact with Alpaca",
 	"main": "index.js",
 	"icon": "icon/win/icon.ico",
