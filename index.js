@@ -18,7 +18,7 @@ app.on("ready", () => {
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
-			enableRemoteModule: true
+			enableRemoteModule: true,
 			devTools: false
 		},
 		titleBarStyle: "hidden",
