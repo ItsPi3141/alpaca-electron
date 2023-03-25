@@ -165,9 +165,9 @@ function initChat() {
 			checkAVX = false;
 			win.webContents.send("ready");
 			console.log("ready!");
-		} else if (res.startsWith("sampling parameters: ") && !checkAVX) {
+		} else if (((res.startsWith("llama_model_load:") && res.includes("sampling parameters: ")) || (res.startsWith("main: interactive mode") && res.includes("sampling parameters: "))) && !checkAVX) {
 			checkAVX = true;
-			console.log("avx error");
+			console.log("checking avx compat");
 		} else if (res.match(/PS [A-Z]:.*>/) && checkAVX) {
 			console.log("avx2 incompatible, retrying with avx1");
 			runningShell.kill();
@@ -176,6 +176,7 @@ function initChat() {
 			alpacaReady = false;
 			alpacaHalfReady = false;
 			supportsAVX2 = false;
+			checkAVX = false;
 			store.set("supportsAVX2", false);
 			initChat();
 		} else if (res.match(/PS [A-Z]:.*>/) && alpacaReady) {
