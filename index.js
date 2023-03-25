@@ -203,7 +203,7 @@ ipcMain.on("getCurrentModel", () => {
 	});
 });
 
-// process.on("unhandledRejection", () => {});
-// process.on("uncaughtException", () => {});
-// process.on("uncaughtExceptionMonitor", () => {});
-// process.on("multipleResolves", () => {});
+process.on("unhandledRejection", () => {});
+process.on("uncaughtException", () => {});
+process.on("uncaughtExceptionMonitor", () => {});
+process.on("multipleResolves", () => {});

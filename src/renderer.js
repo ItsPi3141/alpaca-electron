@@ -480,3 +480,10 @@ document.getElementById("change-model").addEventListener("click", () => {
 ipcRenderer.on("currentModel", (_event, { data }) => {
 	document.querySelector("#path-dialog > input[type=text]").value = data;
 });
+
+setInterval(() => {
+	document.body.style.marginTop = "0px";
+	setTimeout(() => {
+		document.body.style.marginTop = "35px";
+	});
+}, 1000);
