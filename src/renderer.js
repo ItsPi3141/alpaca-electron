@@ -242,6 +242,11 @@ const say = (msg, id, isUser) => {
 	item.classList.add(isUser ? "user-msg" : "bot-msg");
 	console.log(msg);
 	item.innerHTML = msg;
+	if (document.getElementById("bottom").getBoundingClientRect().y - 40 < window.innerHeight) {
+		setTimeout(() => {
+			bottom.scrollIntoView({ behavior: "smooth", block: "end" });
+		}, 100);
+	}
 	messages.append(item);
 };
 socket.emit("request", {
