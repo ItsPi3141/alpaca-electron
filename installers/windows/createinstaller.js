@@ -22,7 +22,7 @@ function getInstallerConfig() {
 		exe: "AlpacaElectron.exe",
 		setupExe: "Alpaca-Electron-setup-win-v" + version + ".exe",
 		setupIcon: path.join(rootPath, "icon", "win", "icon.ico"),
-		iconUrl: "https://raw.githubusercontent.com/ItsPi3141/alpaca-chat/main/icon/alpaca-chat-logo-round.png",
+		iconUrl: "https://raw.githubusercontent.com/ItsPi3141/alpaca-chat/main/icon/win/icon.ico",
 		loadingGif: path.join(rootPath, "icon", "png", "256x256.png")
 	});
 }
