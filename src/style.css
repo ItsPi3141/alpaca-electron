@@ -97,7 +97,7 @@ body {
 	margin: 0;
 	padding: 0px;
 	overflow: hidden;
-	margin-top: 35px;
+	margin-top: 32px;
 }
 
 .input-field {
@@ -244,7 +244,7 @@ button#clear {
 }
 #messages > li {
 	box-sizing: border-box;
-	padding: 24px calc((100vw - 48rem) / 2);
+	padding: 24px calc((100% - 48rem + 96px) / 2 - 48px) 24px calc((100% - 48rem + 96px) / 2 + 48px);
 }
 /* #messages > li:nth-child(odd) {
 	background: var(--surface);
