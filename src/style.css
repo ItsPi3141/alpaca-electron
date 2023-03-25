@@ -64,7 +64,8 @@
 	color: var(--primary-text);
 	font-size: 1rem;
 	line-height: 28px;
-	font-family: Sohne;
+	/* font-family: Sohne; */
+	font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 	font-weight: normal;
 }
 h1,
@@ -80,7 +81,8 @@ code {
 	line-height: 1.5;
 	display: block;
 	overflow: auto hidden;
-	font-family: "Sohne Mono";
+	/* font-family: "Sohne Mono"; */
+	font-family: Monaco, Andale Mono, Ubuntu Mono, monospace;
 }
 pre:has(code) {
 	padding: 8px;
@@ -250,7 +252,7 @@ button#clear {
 	box-sizing: border-box;
 	padding: 24px calc((100% - 48rem + 96px) / 2) 24px calc((100% - 48rem + 96px) / 2 + 48px);
 }
-#messages > li.bot-msg {
+#messages > li.user-msg {
 	background: var(--surface);
 }
 #messages > li > br {
