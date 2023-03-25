@@ -21,7 +21,8 @@ app.on("ready", () => {
 			enableRemoteModule: true
 			// devTools: false
 		},
-		titleBarStyle: "hidden"
+		titleBarStyle: "hidden",
+		icon: path.join(__dirname, "icon", "png", "128x128.png")
 	});
 	require("@electron/remote/main").enable(win.webContents);
 
@@ -138,7 +139,7 @@ function initChat() {
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
 		console.log(`////> ${res}`);
-		if (res.includes("llama_model_load: invalid model file") && res.includes("main: failed to load model from")) {
+		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: failed to load model from")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
 		} else if (res.includes("\n>") && !alpacaReady) {
@@ -190,6 +191,11 @@ ipcMain.on("stopGeneration", () => {
 			});
 		}, 200);
 	}
+});
+ipcMain.on("getCurrentModel", () => {
+	win.webContents.send("currentModel", {
+		data: store.get("modelPath")
+	});
 });
 
 // process.on("unhandledRejection", () => {});
