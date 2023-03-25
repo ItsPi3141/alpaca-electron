@@ -19,7 +19,7 @@ app.on("ready", () => {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true
-			// devTools: false
+			devTools: false
 		},
 		titleBarStyle: "hidden",
 		icon: path.join(__dirname, "icon", "png", "128x128.png")
