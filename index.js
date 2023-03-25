@@ -28,6 +28,8 @@ app.on("ready", () => {
 
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
+	win.setMenu(null);
+
 	app.on("activate", function () {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
 	});
