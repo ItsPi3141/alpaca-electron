@@ -70,6 +70,11 @@ ipcMain.on("cpuCount", () => {
 		data: osUtil.cpuCount()
 	});
 });
+ipcMain.on("threadUtilized", () => {
+	win.webContents.send("threadUtilized", {
+		data: threads
+	});
+});
 ipcMain.on("freemem", () => {
 	win.webContents.send("freemem", {
 		data: Math.round(osUtil.freemem() / 102.4) / 10
