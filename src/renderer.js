@@ -193,9 +193,9 @@ form.addEventListener("submit", (e) => {
 	e.preventDefault();
 	e.stopPropagation();
 	if (input.value) {
-		config.prompt = input.value.replaceAll("\n", "\\n").replaceAll('"', '\\\\\\""');
+		config.prompt = input.value.replaceAll("\n", "\\n");
 		ipcRenderer.send("message", { data: config.prompt });
-		say(config.prompt, `user${gen}`, true);
+		say(input.value, `user${gen}`, true);
 		loading(config.prompt);
 		input.value = "";
 		isRunningModel = true;
@@ -414,11 +414,15 @@ const ramText = document.querySelector("#ram .text");
 const cpuBar = document.querySelector("#cpu .bar-inner");
 const ramBar = document.querySelector("#ram .bar-inner");
 
-var cpuCount, totalmem, cpuPercent, freemem;
+var cpuCount, threadUtilized, totalmem, cpuPercent, freemem;
 ipcRenderer.send("cpuCount");
+ipcRenderer.send("threadUtilized");
 ipcRenderer.send("totalmem");
 ipcRenderer.on("cpuCount", (_event, { data }) => {
 	cpuCount = data;
+});
+ipcRenderer.on("threadUtilized", (_event, { data }) => {
+	threadUtilized = data;
 });
 ipcRenderer.on("totalmem", (_event, { data }) => {
 	totalmem = Math.round(data / 102.4) / 10;
@@ -430,7 +434,7 @@ setInterval(async () => {
 }, 1500);
 ipcRenderer.on("cpuUsage", (_event, { data }) => {
 	cpuPercent = Math.round(data * 100);
-	cpuText.innerText = `CPU: ${cpuPercent}%, ${cpuCount} threads`;
+	cpuText.innerText = `CPU: ${cpuPercent}%, ${threadUtilized}/${cpuCount} threads`;
 	cpuBar.style.transform = `scaleX(${cpuPercent / 100})`;
 });
 ipcRenderer.on("freemem", (_event, { data }) => {
@@ -462,10 +466,3 @@ document.getElementById("change-model").addEventListener("click", () => {
 ipcRenderer.on("currentModel", (_event, { data }) => {
 	document.querySelector("#path-dialog > input[type=text]").value = data;
 });
-
-setInterval(() => {
-	document.body.style.marginTop = "0px";
-	setTimeout(() => {
-		document.body.style.marginTop = "35px";
-	});
-}, 1000);
