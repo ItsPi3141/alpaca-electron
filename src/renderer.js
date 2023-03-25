@@ -295,32 +295,14 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll(/\r?\n\x1B\[\d+;\d+H./g, "");
 			responses[id] = responses[id].replaceAll(/\x08\r?\n?/g, "");
 
-			// responses[id] = responses[id].replaceAll("ΓÇÖ", "'"); //apostrophe
-			// responses[id] = responses[id].replaceAll("ΓÇ£", "“"); //left quote
-			// responses[id] = responses[id].replaceAll("ΓÇ¥", "”"); //right quote
-			// responses[id] = responses[id].replaceAll("ΓÇÿ", "‘"); //left single quote
-			// responses[id] = responses[id].replaceAll("ΓÇª", ","); //comma, could also be question mark
-			// responses[id] = responses[id].replaceAll("ΓÇô", "-"); //dash (not sure)
-			// responses[id] = responses[id].replaceAll("ΓÇö", ","); //comma, could also be ampersand (not sure)
-			// responses[id] = responses[id].replaceAll("ΓÇï", ";"); //semicolon
-
-			// responses[id] = responses[id].replaceAll("ÔÇÖ", "'"); //apostrophe
-			// responses[id] = responses[id].replaceAll("ÔÇ£", "“"); //left quote
-			// responses[id] = responses[id].replaceAll("ÔÇØ", "”"); //right quote
-
-			// responses[id] = responses[id].replaceAll("┬ú", "$"); //dollar sign
-			// responses[id] = responses[id].replaceAll("Æs", "'s"); //apostrophe s
-			// responses[id] = responses[id].replaceAll("IÆll", "I'll"); //I will
-
-			// responses[id] = responses[id].replaceAll("&quot;", '"'); //quote
-
 			responses[id] = responses[id].replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;"); //tab chracters
 			responses[id] = responses[id].replaceAll("\\b", "&nbsp;"); //no break space
 			responses[id] = responses[id].replaceAll("\\f", "&nbsp;"); //no break space
 			responses[id] = responses[id].replaceAll("\\r", "\n"); //sometimes /r is used in codeblocks
 
 			responses[id] = responses[id].replaceAll("\\n", "\n"); //convert line breaks back
-			responses[id] = responses[id].replaceAll('\\"', '"'); //convert quotes back
+			responses[id] = responses[id].replaceAll("\\\n", "\n"); //convert line breaks back
+			responses[id] = responses[id].replaceAll('\\\\\\""', '"'); //convert quotes back
 
 			responses[id] = responses[id].replaceAll(/\[name\]/gi, "Alpaca");
 
