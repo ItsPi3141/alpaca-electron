@@ -244,7 +244,7 @@ button#clear {
 }
 #messages > li {
 	box-sizing: border-box;
-	padding: 24px calc((100% - 48rem + 96px) / 2 - 48px) 24px calc((100% - 48rem + 96px) / 2 + 48px);
+	padding: 24px calc((100% - 48rem + 96px) / 2) 24px calc((100% - 48rem + 96px) / 2 + 48px);
 }
 /* #messages > li:nth-child(odd) {
 	background: var(--surface);

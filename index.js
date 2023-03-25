@@ -18,8 +18,8 @@ app.on("ready", () => {
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
-			enableRemoteModule: true
-			// devTools: false
+			enableRemoteModule: true,
+			devTools: false
 		},
 		titleBarStyle: "hidden",
 		icon: path.join(__dirname, "icon", "png", "128x128.png")

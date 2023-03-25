@@ -310,7 +310,8 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll("\\begin{code}", `<pre><code>`); //start codeblock
 
 			responses[id] = responses[id].replaceAll("\\end{code}", `</code></pre>`); //end codeblock
-			if (document.getElementById("bottom").getBoundingClientRect().y < window.innerHeight) {
+			// if scroll is within 8px of the bottom, scroll to bottom
+			if (document.getElementById("bottom").getBoundingClientRect().y - 40 < window.innerHeight) {
 				setTimeout(() => {
 					bottom.scrollIntoView({ behavior: "smooth", block: "end" });
 				}, 100);
