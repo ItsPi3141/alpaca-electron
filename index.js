@@ -120,6 +120,12 @@ const os = require("os");
 var runningShell, currentPrompt;
 var alpacaReady,
 	alpacaHalfReady = false;
+var checkAVX,
+	isAVX2 = false;
+if (store.get("supportsAVX2") == undefined) {
+	store.set("supportsAVX2", true);
+}
+var supportsAVX2 = store.get("supportsAVX2");
 const config = {
 	name: "xterm-color",
 	cols: 69420,
@@ -151,8 +157,22 @@ function initChat() {
 			alpacaHalfReady = true;
 		} else if (alpacaHalfReady && !alpacaReady) {
 			alpacaReady = true;
+			checkAVX = false;
 			win.webContents.send("ready");
 			console.log("ready!");
+		} else if (res.startsWith("sampling parameters: ") && !checkAVX) {
+			checkAVX = true;
+			console.log("avx error");
+		} else if (res.match(/PS [A-Z]:.*>/) && checkAVX) {
+			console.log("avx2 incompatible, retrying with avx1");
+			runningShell.kill();
+			runningShell = undefined;
+			currentPrompt = undefined;
+			alpacaReady = false;
+			alpacaHalfReady = false;
+			supportsAVX2 = false;
+			store.set("supportsAVX2", false);
+			initChat();
 		} else if (res.match(/PS [A-Z]:.*>/) && alpacaReady) {
 			console.log("restarting");
 			win.webContents.send("result", {
@@ -174,7 +194,7 @@ function initChat() {
 			});
 		}
 	});
-	runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", "chat.exe")}" -m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128\r`);
+	runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" -m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128\r`);
 }
 ipcMain.on("startChat", () => {
 	initChat();
