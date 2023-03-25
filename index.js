@@ -164,7 +164,7 @@ function initChat() {
 			alpacaReady = false;
 			alpacaHalfReady = false;
 			initChat();
-		} else if (res.endsWith("\n> ") && alpacaReady) {
+		} else if (res.includes("\n>") && alpacaReady) {
 			win.webContents.send("result", {
 				data: "\n\n<end>"
 			});

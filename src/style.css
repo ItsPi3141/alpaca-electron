@@ -97,7 +97,7 @@ body {
 	margin: 0;
 	padding: 0px;
 	overflow: hidden;
-	padding-top: 32px;
+	padding-top: 35px;
 }
 
 .input-field {
@@ -257,6 +257,24 @@ button#clear {
 }
 li {
 	white-space: pre-wrap;
+}
+#messages > li::before {
+	width: 32px;
+	height: 32px;
+	content: "";
+	display: inline-block;
+	background-size: cover;
+	position: relative;
+	margin-left: -48px;
+	margin-right: 16px;
+	margin-top: -32px;
+	top: 14px;
+}
+#messages > li.user-msg::before {
+	background-image: url(img/user.png);
+}
+#messages > li.bot-msg::before {
+	background-image: url(img/alpaca.png);
 }
 
 @-webkit-keyframes spin {
