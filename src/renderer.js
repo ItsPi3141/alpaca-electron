@@ -304,7 +304,6 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			form.setAttribute("class", isRunningModel ? "running-model" : "");
 		}, 200);
 	} else {
-		console.log(data);
 		document.body.classList.remove("llama");
 		document.body.classList.remove("alpaca");
 		isRunningModel = true;
@@ -315,9 +314,6 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			if (!responses[id]) {
 				responses[id] = document.querySelector(`[data-id='${id}']`).innerHTML;
 			}
-			response = response.replaceAll(/</g, "&lt;");
-			response = response.replaceAll(/>/g, "&gt;");
-			console.log(response);
 
 			responses[id] = responses[id] + response;
 
@@ -354,6 +350,11 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll("\\begin{code}", `<pre><code>`); //start codeblock
 
 			responses[id] = responses[id].replaceAll("\\end{code}", `</code></pre>`); //end codeblock
+
+			//escape html tag
+			responses[id] = responses[id].replaceAll(/</g, "&lt;");
+			responses[id] = responses[id].replaceAll(/>/g, "&gt;");
+
 			// if scroll is within 8px of the bottom, scroll to bottom
 			if (document.getElementById("bottom").getBoundingClientRect().y - 40 < window.innerHeight) {
 				setTimeout(() => {
@@ -501,6 +502,11 @@ document.getElementById("clear-chat").addEventListener("click", () => {
 	document.querySelectorAll("#messages li").forEach((element) => {
 		element.remove();
 	});
+	setTimeout(() => {
+		document.querySelectorAll("#messages li").forEach((element) => {
+			element.remove();
+		});
+	}, 100);
 });
 document.getElementById("change-model").addEventListener("click", () => {
 	ipcRenderer.send("getCurrentModel");
