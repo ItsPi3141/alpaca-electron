@@ -1,6 +1,8 @@
 node_modules
 package-lock.json
 yarn.lock
+models/*
+!models/.gitkeep
 
 release-builds
 .DS_Store

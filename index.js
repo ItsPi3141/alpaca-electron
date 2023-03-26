@@ -220,7 +220,9 @@ function initChat() {
 		// Macos
 		runningShell.write(`${path.resolve(__dirname, "bin", "chat_mac")}  -m "${modelPath}" ${chatArgs}\r`);
 		// runningShell.write(`../Resources/app/bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`);
-	}
+	} else {
+    runningShell.write(`${path.resolve(__dirname, "bin", "chat")} -m "${modelPath}" ${chatArgs}\r`);
+  }
 }
 ipcMain.on("startChat", () => {
 	initChat();
