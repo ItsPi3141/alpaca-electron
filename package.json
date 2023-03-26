@@ -12,7 +12,10 @@
 		"make-win": "npx electron-packager . AlpacaElectron --overwrite --platform=win32 --arch=x64 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
 		"pack-win": "node installers/windows/createinstaller.js",
 		"win": "npm run make-win && npm run pack-win",
-		"make-mac": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=universal --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"make-mac-x64": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=x64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"make-mac-arm64": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=arm64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"pack-mac-x64": "npx electron-installer-dmg release-builds/AlpacaElectron-darwin-x64/AlpacaElectron.app \"Alpaca Electron\"",
+		"pack-mac-arm64": "npx electron-installer-dmg release-builds/AlpacaElectron-darwin-arm64/AlpacaElectron.app \"Alpaca Electron\"",
 		"rebuild": ".\\node_modules\\.bin\\electron-rebuild",
 		"rebuild-linux": "./node_modules/.bin/electron-rebuild"
 	},
@@ -27,6 +30,7 @@
 	},
 	"devDependencies": {
 		"electron": "^13.6.9",
+		"electron-installer-dmg": "^4.0.0",
 		"electron-packager": "^17.1.1",
 		"electron-rebuild": "^3.2.9",
 		"electron-winstaller": "^5.1.0"
