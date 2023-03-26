@@ -1,7 +1,7 @@
 {
 	"name": "alpaca-electron",
 	"description": "The most user friendly way to interact with Alpaca",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"author": "Pi",
 	"license": "MIT",
 	"main": "index.js",
