@@ -218,7 +218,8 @@ function initChat() {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${chatArgs}\r`);
 	} else if (platform == "darwin") {
 		// Macos
-		runningShell.write(`./bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`);
+		runningShell.write(`${path.resolve(__dirname, "bin", "chat_mac")}  -m "${modelPath}" ${chatArgs}\r`);
+		// runningShell.write(`../Resources/app/bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`);
 	}
 }
 ipcMain.on("startChat", () => {
