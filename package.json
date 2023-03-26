@@ -10,7 +10,8 @@
 		"make-win": "npx electron-packager . AlpacaElectron --overwrite --platform=win32 --arch=x64 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
 		"pack-win": "node installers/windows/createinstaller.js",
 		"win": "npm run make-win && npm run pack-win",
-		"rebuild": ".\\node_modules\\.bin\\electron-rebuild"
+		"rebuild": ".\\node_modules\\.bin\\electron-rebuild",
+		"rebuild-linux": "./node_modules/.bin/electron-rebuild"
 	},
 	"author": "",
 	"license": "MIT",
