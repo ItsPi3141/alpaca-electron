@@ -30,7 +30,7 @@
 5. The program will automatically restart. Now you can begin chatting!
 
 > **Note**  
-> The program will also accept any other 4 bit quantized .bin model files. If you can find other .bin Alpaca model files, you can use them instead of the one in the Quick Start Guide to experiment with different models. As always, be careful about what you download from the internet.
+> The program will also accept any other 4 bit quantized .bin model files. If you can find other .bin Alpaca model files, you can use them instead of the one recommended in the Quick Start Guide to experiment with different models. As always, be careful about what you download from the internet.
 
 ## 🔧 Troubleshooting
 
