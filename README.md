@@ -2,9 +2,6 @@
 <h1 align="center">
   Alpaca Electron
 </h1>
-<p align="center">
-  <img src="https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=Electron&logoColor=white">
-</p>
 <p align="center">Alpaca Electron is built from the ground-up to be the easiest way to chat with the alpaca AI models. No command line or compiling needed!</p>
 
 
