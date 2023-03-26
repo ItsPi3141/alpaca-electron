@@ -1,20 +1,21 @@
 {
 	"name": "alpaca-electron",
-	"version": "1.0.2",
 	"description": "The most user friendly way to interact with Alpaca",
+	"version": "1.0.2",
+	"author": "Pi",
+	"license": "MIT",
 	"main": "index.js",
 	"icon": "icon/win/icon.ico",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "electron .",
-		"make-win": "npx electron-packager . AlpacaElectron --overwrite --platform=win32 --arch=x64 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"make-win": "npx electron-packager . AlpacaElectron --overwrite --platform=win32 --arch=x64,ia32 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
 		"pack-win": "node installers/windows/createinstaller.js",
 		"win": "npm run make-win && npm run pack-win",
+		"make-mac": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=universal --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
 		"rebuild": ".\\node_modules\\.bin\\electron-rebuild",
 		"rebuild-linux": "./node_modules/.bin/electron-rebuild"
 	},
-	"author": "",
-	"license": "MIT",
 	"dependencies": {
 		"@electron/remote": "^2.0.9",
 		"electron-store": "^8.1.0",
