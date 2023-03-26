@@ -1,10 +1,10 @@
 const remote = require("@electron/remote");
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, dialog } = require("electron");
 
 const win = remote.getCurrentWindow();
 
 document.onreadystatechange = (event) => {
-	ipcRenderer.send("os")
+	ipcRenderer.send("os");
 	if (document.readyState == "complete") {
 		handleWindowControls();
 	}
@@ -13,9 +13,9 @@ document.onreadystatechange = (event) => {
 	ipcRenderer.send("checkModelPath");
 };
 
-ipcRenderer.on("os", (_error, {data}) => {
-	document.querySelector("html").classList.add(data)
-})
+ipcRenderer.on("os", (_error, { data }) => {
+	document.querySelector("html").classList.add(data);
+});
 
 ipcRenderer.on("modelPathValid", (_event, { data }) => {
 	if (data) {
@@ -27,7 +27,7 @@ ipcRenderer.on("modelPathValid", (_event, { data }) => {
 });
 
 document.querySelector("#path-dialog-bg > div > div.dialog-button > button.primary").addEventListener("click", () => {
-	var path = document.querySelector("#path-dialog > input[type=text]").value.replaceAll('"', "");
+	var path = document.querySelector("#path-dialog input[type=text]").value.replaceAll('"', "");
 	ipcRenderer.send("checkPath", { data: path });
 });
 
@@ -43,6 +43,24 @@ ipcRenderer.on("pathIsValid", (_event, { data }) => {
 		ipcRenderer.send("reloadApp");
 	} else {
 		document.querySelector("#path-dialog > p.error-text").style.display = "block";
+	}
+});
+
+document.querySelector("#path-dialog > div > button").addEventListener("click", () => {
+	ipcRenderer.send("pickFile");
+});
+ipcRenderer.on("pickedFile", (_error, { data }) => {
+	document.querySelector("#path-dialog input[type=text]").value = data;
+});
+
+ipcRenderer.on("currentModel", (_event, { data }) => {
+	document.querySelector("#path-dialog input[type=text]").value = data;
+});
+
+document.querySelector("#path-dialog input[type=text]").addEventListener("keypress", (e) => {
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		document.querySelector("#path-dialog-bg .dialog-button button.primary").click();
 	}
 });
 
@@ -487,8 +505,4 @@ document.getElementById("change-model").addEventListener("click", () => {
 	document.querySelector("#path-dialog-bg > div > div.dialog-button > button.secondary").style.display = "";
 	document.querySelector("#path-dialog-bg > div > div.dialog-title > h3").innerText = "Change model path";
 	document.getElementById("path-dialog-bg").classList.remove("hidden");
-});
-
-ipcRenderer.on("currentModel", (_event, { data }) => {
-	document.querySelector("#path-dialog > input[type=text]").value = data;
 });

@@ -4,7 +4,7 @@ if (setupEvents.handleSquirrelEvent()) {
 	return;
 }
 
-const { BrowserWindow, app, ipcMain } = require("electron");
+const { BrowserWindow, app, ipcMain, dialog } = require("electron");
 const path = require("path");
 require("@electron/remote/main").initialize();
 
@@ -32,7 +32,7 @@ function createWindow() {
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 }
 
 app.on("ready", () => {
@@ -221,8 +221,8 @@ function initChat() {
 		runningShell.write(`${path.resolve(__dirname, "bin", "chat_mac")}  -m "${modelPath}" ${chatArgs}\r`);
 		// runningShell.write(`../Resources/app/bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`);
 	} else {
-    runningShell.write(`${path.resolve(__dirname, "bin", "chat")} -m "${modelPath}" ${chatArgs}\r`);
-  }
+		runningShell.write(`${path.resolve(__dirname, "bin", "chat")} -m "${modelPath}" ${chatArgs}\r`);
+	}
 }
 ipcMain.on("startChat", () => {
 	initChat();
@@ -249,6 +249,27 @@ ipcMain.on("getCurrentModel", () => {
 	win.webContents.send("currentModel", {
 		data: store.get("modelPath")
 	});
+});
+
+ipcMain.on("pickFile", () => {
+	dialog
+		.showOpenDialog(win, {
+			title: "Choose Alpaca GGML model",
+			filters: [
+				{
+					name: "GGML model",
+					extensions: ["bin"]
+				}
+			],
+			properties: ["dontAddToRecent", "openFile"]
+		})
+		.then((obj) => {
+			if (!obj.canceled) {
+				win.webContents.send("pickedFile", {
+					data: obj.filePaths[0]
+				});
+			}
+		});
 });
 
 process.on("unhandledRejection", () => {});

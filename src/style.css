@@ -602,16 +602,16 @@ input:checked + .slider:before {
 	cursor: pointer;
 	transition: all 0.1s;
 }
-.dialog-button button.primary {
+button.primary {
 	background-color: var(--accent);
 }
-.dialog-button button.primary:hover {
+button.primary:hover {
 	background-color: var(--secondary);
 }
-.dialog-button button.secondary {
+button.secondary {
 	background-color: var(--surface-alt);
 }
-.dialog-button button.secondary:hover {
+button.secondary:hover {
 	background-color: var(--surface);
 }
 
@@ -627,4 +627,12 @@ p.error-text::before {
 	font-size: 20px;
 	position: relative;
 	top: 2px;
+}
+#path-dialog input[type="text"] {
+	flex-grow: 1;
+	text-overflow: ellipsis;
+}
+#path-dialog button {
+	width: 40px;
+	height: 40px;
 }
