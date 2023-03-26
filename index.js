@@ -25,18 +25,18 @@ function createWindow() {
 			devTools: false
 		},
 		titleBarStyle: "hidden",
-		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") :path.join(__dirname, "icon", "png", "128x128.png")
+		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") : path.join(__dirname, "icon", "png", "128x128.png")
 	});
 	require("@electron/remote/main").enable(win.webContents);
-	
+
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
-	
+
 	win.setMenu(null);
-	win.webContents.openDevTools()
+	win.webContents.openDevTools();
 }
 
 app.on("ready", () => {
-	createWindow()
+	createWindow();
 });
 
 app.on("window-all-closed", () => {
@@ -59,7 +59,7 @@ ipcMain.on("reloadApp", () => {
 const osUtil = require("os-utils");
 var threads;
 var sysThreads = osUtil.cpuCount();
-for (let i = 1; i < sysThreads - 1; i = i * 2) {
+for (let i = 1; i < sysThreads; i = i * 2) {
 	threads = i;
 }
 ipcMain.on("cpuUsage", () => {
@@ -207,17 +207,18 @@ function initChat() {
 				data: "\n\n<end>"
 			});
 		} else if (!res.startsWith(currentPrompt) && alpacaReady) {
-			if (platform == "darwin") res = res.replaceAll("^C", "")
+			if (platform == "darwin") res = res.replaceAll("^C", "");
 			win.webContents.send("result", {
 				data: res
 			});
 		}
 	});
-	const chatArgs = `-m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128`
+	const chatArgs = `-m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128`;
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${chatArgs}\r`);
-	} else if (platform == "darwin") { // Macos
-		runningShell.write(`./bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`)
+	} else if (platform == "darwin") {
+		// Macos
+		runningShell.write(`./bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`);
 	}
 }
 ipcMain.on("startChat", () => {
