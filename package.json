@@ -14,8 +14,8 @@
 		"win": "npm run make-win && npm run pack-win",
 		"make-mac-x64": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=x64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
 		"make-mac-arm64": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=arm64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
-		"pack-mac-x64": "electron-installer-dmg release-builds/AlpacaElectron-darwin-x64/AlpacaElectron.app \"Alpaca Electron\" --out=release-builds/dmg/x64 --icon=icon/mac/icon.icns --icon-size=128 --title=\"Alpaca Electron\" --overwrite",
-		"pack-mac-arm64": "electron-installer-dmg release-builds/AlpacaElectron-darwin-arm64/AlpacaElectron.app \"Alpaca Electron\" --out=release-builds/dmg/arm64 --icon=icon/mac/icon.icns --icon-size=128 --title=\"Alpaca Electron\" --overwrite",
+		"pack-mac-x64": "electron-installer-dmg release-builds/AlpacaElectron-darwin-x64/AlpacaElectron.app \"Alpaca Electron\" --out=release-builds/dmg/x64 --icon=icon/mac/icon.icns --title=\"Alpaca Electron\" --overwrite",
+		"pack-mac-arm64": "electron-installer-dmg release-builds/AlpacaElectron-darwin-arm64/AlpacaElectron.app \"Alpaca Electron\" --out=release-builds/dmg/arm64 --icon=icon/mac/icon.icns --title=\"Alpaca Electron\" --overwrite",
 		"mac": "npm run make-mac-x64 && npm run make-mac-arm64 && npm run pack-mac-x64 && npm run pack-mac-arm64",
 		"rebuild": ".\\node_modules\\.bin\\electron-rebuild",
 		"rebuild-linux": "./node_modules/.bin/electron-rebuild"
