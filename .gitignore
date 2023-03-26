@@ -3,3 +3,4 @@ package-lock.json
 yarn.lock
 
 release-builds
+.DS_Store
