@@ -12,7 +12,7 @@ const os = require("os");
 const platform = os.platform();
 
 var win;
-app.on("ready", () => {
+function createWindow() {
 	win = new BrowserWindow({
 		width: 1200,
 		height: 810,
@@ -28,22 +28,22 @@ app.on("ready", () => {
 		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") :path.join(__dirname, "icon", "png", "128x128.png")
 	});
 	require("@electron/remote/main").enable(win.webContents);
-
+	
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
-
+	
 	win.setMenu(null);
 	win.webContents.openDevTools()
+}
 
-	app.on("activate", function () {
-		if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
-
+app.on("ready", () => {
+	createWindow()
 });
 
 app.on("window-all-closed", () => {
-	if (process.platform !== "darwin") {
-		app.quit();
-	}
+	app.quit();
+});
+app.on("activate", () => {
+	if (win == null) createWindow();
 });
 app.on("before-quit", () => {
 	if (runningShell) runningShell.kill();
