@@ -264,6 +264,13 @@ function setHomepage() {
 	}
 }
 
+Date.prototype.timeNow = function () {
+	return (this.getHours() < 10 ? "0" : "") + this.getHours() + ":" + (this.getMinutes() < 10 ? "0" : "") + this.getMinutes() + ":" + (this.getSeconds() < 10 ? "0" : "") + this.getSeconds();
+};
+Date.prototype.today = function () {
+	return (this.getDate() < 10 ? "0" : "") + this.getDate() + "/" + (this.getMonth() + 1 < 10 ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
+};
+
 ipcRenderer.on("result", async (_event, { data }) => {
 	var response = data;
 	loading(false);
@@ -310,6 +317,9 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll('\\\\\\""', '"'); //convert quotes back
 
 			responses[id] = responses[id].replaceAll(/\[name\]/gi, "Alpaca");
+
+			responses[id] = responses[id].replaceAll(/<current_time>/gi, new Date().timeNow());
+			responses[id] = responses[id].replaceAll(/<current_date>/gi, new Date().today());
 
 			//support for codeblocks
 			responses[id] = responses[id].replaceAll("\\begin{code}", `<pre><code>`); //start codeblock
