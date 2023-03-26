@@ -1,4 +1,4 @@
-﻿<p align="center"><img src="https://github.com/8bit-coder/alpaca-electron/blob/main/icon/alpaca-readme-icon.jpg?raw=true"></p>
+﻿<p align="center"><img src="https://raw.githubusercontent.com/8bit-coder/alpaca-electron/main/icon/alpaca-chat-logo-round.png?raw=true" height=192></p>
 <h1 align="center">
   Alpaca Electron
 </h1>
