@@ -82,6 +82,10 @@ pre:has(code) {
 	border: #8884 solid 1px;
 }
 
+button {
+	cursor: pointer;
+}
+
 html,
 body {
 	background-color: var(--background-mid);
@@ -230,7 +234,6 @@ html.darwin #main {
 }
 .column button.card {
 	width: 100%;
-	cursor: pointer;
 }
 .column button.card:hover {
 	background-color: var(--background-alt);
@@ -599,7 +602,6 @@ input:checked + .slider:before {
 }
 .dialog-button button {
 	padding: 0.5rem 1rem;
-	cursor: pointer;
 	transition: all 0.1s;
 }
 button.primary {

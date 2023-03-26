@@ -166,7 +166,7 @@ function initChat() {
 	runningShell = ptyProcess;
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
-		console.log(`////> ${res}`);
+		// console.log(`////> ${res}`);
 		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: failed to load model from")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
@@ -213,7 +213,7 @@ function initChat() {
 			});
 		}
 	});
-	const chatArgs = `-m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128`;
+	const chatArgs = `-m "${modelPath}" --temp 0.3 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 64`;
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${chatArgs}\r`);
 	} else if (platform == "darwin") {

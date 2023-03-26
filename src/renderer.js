@@ -215,6 +215,7 @@ document.querySelector(".form-header").addEventListener("input", (e) => {
 form.addEventListener("submit", (e) => {
 	e.preventDefault();
 	e.stopPropagation();
+	if (form.classList.contains("running-model")) return;
 	if (input.value) {
 		config.prompt = input.value.replaceAll("\n", "\\n");
 		ipcRenderer.send("message", { data: config.prompt });
@@ -496,6 +497,7 @@ document.getElementById("clear").addEventListener("click", () => {
 });
 
 document.getElementById("clear-chat").addEventListener("click", () => {
+	stopButton.click();
 	document.querySelectorAll("#messages li").forEach((element) => {
 		element.remove();
 	});
