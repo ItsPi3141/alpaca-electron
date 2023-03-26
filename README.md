@@ -7,7 +7,7 @@ Alpaca Electron is built from the ground-up to be the easiest way to chat with t
 - Runs on the CPU, meaning no need for an expensive graphics card
 
 ## Demo
-![Demonstration](https://cdn.discordapp.com/attachments/815992022992945212/1089341266942234645/gif.gif)
+![Demonstration](https://github.com/8bit-coder/alpaca-electron/raw/main/demo.gif)
 ## Quick Start Guide
 Step 1. Download the [model file](https://huggingface.co/Sosaka/Alpaca-native-4bit-ggml/blob/main/ggml-alpaca-7b-q4.bin) and place it somewhere on your computer where it's easy to find.
 Step 2. Download the latest .exe from the [releases](https://github.com/ItsPi3141/alpaca-electron/releases) section.
