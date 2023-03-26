@@ -105,3 +105,17 @@
 .maximized #max-button {
 	display: none;
 }
+
+html.darwin #titlebar {
+	height: 28px !important;
+}
+html.darwin #window-controls {
+	display: none !important;
+}
+html.darwin #window-title {
+	justify-content: center !important;
+	align-items: flex-start !important;
+}
+html.darwin #drag-region {
+	grid-template-columns: none !important;
+}

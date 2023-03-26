@@ -4,6 +4,7 @@ const { ipcRenderer } = require("electron");
 const win = remote.getCurrentWindow();
 
 document.onreadystatechange = (event) => {
+	ipcRenderer.send("os")
 	if (document.readyState == "complete") {
 		handleWindowControls();
 	}
@@ -11,6 +12,10 @@ document.onreadystatechange = (event) => {
 	document.querySelector("#path-dialog-bg > div > div.dialog-title > h3").innerText = "Couldn't load model";
 	ipcRenderer.send("checkModelPath");
 };
+
+ipcRenderer.on("os", (_error, {data}) => {
+	document.querySelector("html").classList.add(data)
+})
 
 ipcRenderer.on("modelPathValid", (_event, { data }) => {
 	if (data) {

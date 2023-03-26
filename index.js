@@ -8,6 +8,9 @@ const { BrowserWindow, app, ipcMain } = require("electron");
 const path = require("path");
 require("@electron/remote/main").initialize();
 
+const os = require("os");
+const platform = os.platform();
+
 var win;
 app.on("ready", () => {
 	win = new BrowserWindow({
@@ -18,21 +21,23 @@ app.on("ready", () => {
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
-			enableRemoteModule: true
+			enableRemoteModule: true,
 			// devTools: false
 		},
 		titleBarStyle: "hidden",
-		icon: path.join(__dirname, "icon", "png", "128x128.png")
+		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") :path.join(__dirname, "icon", "png", "128x128.png")
 	});
 	require("@electron/remote/main").enable(win.webContents);
 
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
+	win.webContents.openDevTools()
 
 	app.on("activate", function () {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
 	});
+
 });
 
 app.on("window-all-closed", () => {
@@ -50,6 +55,7 @@ ipcMain.on("reloadApp", () => {
 });
 
 // OS STATS
+
 const osUtil = require("os-utils");
 var threads;
 var sysThreads = osUtil.cpuCount();
@@ -85,6 +91,11 @@ ipcMain.on("freemem", () => {
 ipcMain.on("totalmem", () => {
 	win.webContents.send("totalmem", {
 		data: osUtil.totalmem()
+	});
+});
+ipcMain.on("os", () => {
+	win.webContents.send("os", {
+		data: platform
 	});
 });
 
@@ -123,7 +134,6 @@ ipcMain.on("checkPath", (_event, { data }) => {
 
 // RUNNING CHAT
 const pty = require("node-pty-prebuilt-multiarch");
-const os = require("os");
 var runningShell, currentPrompt;
 var alpacaReady,
 	alpacaHalfReady = false;
@@ -138,7 +148,7 @@ const config = {
 	cols: 69420,
 	rows: 30
 };
-const platform = os.platform();
+
 const shell = platform === "win32" ? "powershell.exe" : "bash";
 const stripAnsi = (str) => {
 	const pattern = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"].join("|");
@@ -181,7 +191,7 @@ function initChat() {
 			checkAVX = false;
 			store.set("supportsAVX2", false);
 			initChat();
-		} else if (res.match(/PS [A-Z]:.*>/) && alpacaReady) {
+		} else if (res.match(/PS [A-Z]:.*>/) && platform == "win32" && alpacaReady) {
 			console.log("restarting");
 			win.webContents.send("result", {
 				data: "\n\n<end>"
@@ -197,12 +207,18 @@ function initChat() {
 				data: "\n\n<end>"
 			});
 		} else if (!res.startsWith(currentPrompt) && alpacaReady) {
+			if (platform == "darwin") res = res.replaceAll("^C", "")
 			win.webContents.send("result", {
 				data: res
 			});
 		}
 	});
-	runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" -m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128\r`);
+	const chatArgs = `-m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 128`
+	if (platform == "win32") {
+		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${chatArgs}\r`);
+	} else if (platform == "darwin") { // Macos
+		runningShell.write(`./bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`)
+	}
 }
 ipcMain.on("startChat", () => {
 	initChat();

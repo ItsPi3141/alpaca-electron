@@ -162,8 +162,12 @@ button#clear {
 	margin-top: 32px;
 	max-height: calc(100vh - 32px);
 	position: fixed;
-	bottom: 0;
+	top: 0;
 	left: 0;
+}
+html.darwin #main {
+	margin-top: 28px;
+	max-height: calc(100vh - 28px);
 }
 #feed {
 	width: calc(100vw - 200px);
