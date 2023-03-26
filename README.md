@@ -1,4 +1,4 @@
-﻿<p align="center"><img src="https://raw.githubusercontent.com/ItsPi3141/alpaca-electron/main/icon/alpaca-chat-logo.png?raw=true" height=192></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ItsPi3141/alpaca-electron/main/icon/alpaca-chat-logo.png?raw=true" height=192></p>
 <h1 align="center">
   Alpaca Electron
 </h1>
