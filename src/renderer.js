@@ -269,6 +269,13 @@ function setHomepage() {
 	}
 }
 
+Date.prototype.timeNow = function () {
+	return (this.getHours() < 10 ? "0" : "") + this.getHours() + ":" + (this.getMinutes() < 10 ? "0" : "") + this.getMinutes() + ":" + (this.getSeconds() < 10 ? "0" : "") + this.getSeconds();
+};
+Date.prototype.today = function () {
+	return (this.getDate() < 10 ? "0" : "") + this.getDate() + "/" + (this.getMonth() + 1 < 10 ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
+};
+
 ipcRenderer.on("result", async (_event, { data }) => {
 	var response = data;
 	loading(false);
@@ -315,6 +322,14 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll('\\\\\\""', '"'); //convert quotes back
 
 			responses[id] = responses[id].replaceAll(/\[name\]/gi, "Alpaca");
+
+			responses[id] = responses[id].replaceAll(/(<|\[|#+)((current|local)_)?time(>|\]|#+)/gi, new Date().timeNow());
+			responses[id] = responses[id].replaceAll(/(<|\[|#+)(current_)?date(>|\]|#+)/gi, new Date().today());
+			responses[id] = responses[id].replaceAll(/(<|\[|#+)day_of_(the_)?week(>|\]|#+)/gi, new Date().toLocaleString("en-us", { weekday: "long" }));
+
+			responses[id] = responses[id].replaceAll(/(<|\[|#+)(current_)?year(>|\]|#+)/gi, new Date().getFullYear());
+			responses[id] = responses[id].replaceAll(/(<|\[|#+)(current_)?month(>|\]|#+)/gi, new Date().getMonth() + 1);
+			responses[id] = responses[id].replaceAll(/(<|\[|#+)(current_)?day(>|\]|#+)/gi, new Date().getDate());
 
 			//support for codeblocks
 			responses[id] = responses[id].replaceAll("\\begin{code}", `<pre><code>`); //start codeblock
