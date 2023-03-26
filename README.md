@@ -18,7 +18,7 @@
 ## 🚀 Quick Start Guide
 
 1. Download an Alpaca model (7B native is recommended) and place it somewhere on your computer where it's easy to find.
-> **Note** 
+> **Note**  
 > Download links will not be provided in this repository.
 
 2. Download the latest installer from the [releases page](https://github.com/ItsPi3141/alpaca-electron/releases) section.
