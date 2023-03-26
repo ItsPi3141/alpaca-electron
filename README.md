@@ -17,9 +17,13 @@
 ![Demonstration](https://github.com/8bit-coder/alpaca-electron/raw/main/demo.gif)
 ## 🚀 Quick Start Guide
 Step 1. Download the [model file](https://huggingface.co/Sosaka/Alpaca-native-4bit-ggml/blob/main/ggml-alpaca-7b-q4.bin) and place it somewhere on your computer where it's easy to find.
+
 Step 2. Download the latest .exe from the [releases](https://github.com/ItsPi3141/alpaca-electron/releases) section.
+
 Step 3. Open the program and wait for it to install.
+
 Step 4. Once done installing, it'll ask for a valid path to a model. Now, go to where you placed the model, hold shift, right click on the file, and then click on "Copy as Path". Then, paste this into that dialog box.
+
 Step 5. The program will automatically restart. Now you can begin chatting!
 
 #### Note that the program will also accept any other 4 bit quantized .bin model files. If you can find other .bin Alpaca model files, you can use them instead of the one in the Quick Start Guide to experiment with different models. As always, be careful about what you download from the internet.
