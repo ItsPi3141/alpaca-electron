@@ -64,50 +64,53 @@ Alpaca Electron
 - If you get an error that says "App can't be opened because it is from an unidentified developer.", go to the Applications folder. Then, hold the control key and click on the app. Then click "Open", then click "Open" when it gives you a warning. Your preference will be saved and MacOS will let you open the app normally from now on. 
 
 ### Linux
-You can either download the prebuilt binary (packaged as tar.gz), extract it and execute it with ```./alpaca-electron``` or build the application on yourself.
 
-If you want to build the application yourself:
+- You can either download the prebuilt binary (packaged as tar.gz), extract it and execute it with ```./alpaca-electron``` or build the application on yourself.
 
-```git clone https://github.com/ItsPi3141/alpaca-electron.git```
-
-Change your current directory to alpaca-electron:
-
-```cd alpaca-electron```
-
-Install application specific dependencies: 
-
-```npm install --save-dev```
-
-Build the application:
-
-```npm run linux-x64```
-
-Change your current directory to the build target:
-
-```cd release-builds/alpaca-electron-linux-x64```
-
-Run the application with ```./alpaca-electron```
+- If you want to build the application yourself:
+>Clone the repository:
+>
+>```git clone https://github.com/ItsPi3141/alpaca-electron.git```
+>
+>Change your current directory to alpaca-electron:
+>
+>```cd alpaca-electron```
+>
+>Install application specific dependencies: 
+>
+>```npm install --save-dev```
+>
+>Build the application:
+>
+>```npm run linux-x64```
+>
+>Change your current directory to the build target:
+>
+>```cd release-builds/alpaca-electron-linux-x64```
+>
+>Run the application with ```./alpaca-electron```
 
 ### Docker Compose
-Clone the repo:
 
-```git clone https://github.com/ItsPi3141/alpaca-electron.git```
+- You can run this electron application with docker compose. Therefore you need to compelete the following steps:
 
-Change your current directory to alpaca-electron:
+>Clone the repository:
+>
+>```git clone https://github.com/ItsPi3141/alpaca-electron.git```
+>
+>Change your current directory to alpaca-electron:
+>
+>```cd alpaca-electron```
+>
+>Build the container image:
+>
+>```docker compose build```
+>
+>Run the application container:
+>
+>```docker compose up -d```
 
-```cd alpaca-electron```
-
-Build the container image:
-
-```docker compose build```
-
-Run the application container:
-
-```docker compose up -d```
-
-**Common error:**
-
-If no window opens up run ```docker compose up``` (without the -d). If there is an error like ```Authorization required, but no authorization protocol specified``` run ```xhost local:root``` on your docker host.
+- If no window opens up run ```docker compose up``` (without the -d). If there is an error like ```Authorization required, but no authorization protocol specified``` run ```xhost local:root``` on your docker host.
 
 ## 👨‍💻 Credits
 
