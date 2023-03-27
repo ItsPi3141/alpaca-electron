@@ -36,6 +36,13 @@ function createWindow() {
 	// win.webContents.openDevTools();
 }
 
+app.on("second-instance", (event, argv, cwd) => {
+	if (win) {
+		if (win.isMinimized()) win.restore();
+		win.focus();
+	}
+});
+
 app.on("ready", () => {
 	createWindow();
 });
