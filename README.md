@@ -4,7 +4,7 @@
 </sub>
 <br>
 Alpaca Electron
-</h3>
+</h1>
 <br>
 <p align="center">
   <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white">
@@ -21,7 +21,7 @@ Alpaca Electron
 - [x] Compact and efficient since it uses [alpaca.cpp](https://github.com/antimatter15/alpaca.cpp) as it's backend
 - [x] Runs on CPU, anyone can run it without an expensive graphics card
 - [x] No external dependencies required, everything is included in the installer
-- [x] UI is similar to a popular chat AI that everyone uses
+- [x] "Borrowed" UI from *that* popular chat AI :trollface:
 - [x] Supports Windows and MacOS
 - [x] Docker-ized 🐋
 - [x] Linux support
