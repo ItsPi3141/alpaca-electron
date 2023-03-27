@@ -10,6 +10,7 @@ require("@electron/remote/main").initialize();
 
 const os = require("os");
 const platform = os.platform();
+const arch = os.arch();
 
 var win;
 function createWindow() {
@@ -220,9 +221,8 @@ function initChat() {
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${chatArgs}\r`);
 	} else if (platform == "darwin") {
-		// Macos
-		runningShell.write(`${path.resolve(__dirname, "bin", "chat_mac")}  -m "${modelPath}" ${chatArgs}\r`);
-		// runningShell.write(`../Resources/app/bin/chat_mac  -m "${modelPath}" ${chatArgs}\r`);
+		const macArch = arch == "x64" ? "chat_mac_x64" : "chat_mac_arm64";
+		runningShell.write(`${path.resolve(__dirname, "bin", macArch)}  -m "${modelPath}" ${chatArgs}\r`);
 	} else {
 		runningShell.write(`${path.resolve(__dirname, "bin", "chat")} -m "${modelPath}" ${chatArgs}\r`);
 	}
