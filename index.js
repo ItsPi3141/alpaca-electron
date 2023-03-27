@@ -59,8 +59,11 @@ ipcMain.on("reloadApp", () => {
 const osUtil = require("os-utils");
 var threads;
 var sysThreads = osUtil.cpuCount();
-for (let i = 1; i <= sysThreads; i = i * 2) {
+for (let i = 1; i < sysThreads; i = i * 2) {
 	threads = i;
+}
+if (sysThreads == 4) {
+	threads = 4
 }
 ipcMain.on("cpuUsage", () => {
 	osUtil.cpuUsage(function (v) {
