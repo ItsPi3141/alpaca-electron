@@ -67,8 +67,11 @@ ipcMain.on("reloadApp", () => {
 const osUtil = require("os-utils");
 var threads;
 var sysThreads = osUtil.cpuCount();
-for (let i = 1; i <= sysThreads; i = i * 2) {
+for (let i = 1; i < sysThreads; i = i * 2) {
 	threads = i;
+}
+if (sysThreads == 4) {
+	threads = 4
 }
 ipcMain.on("cpuUsage", () => {
 	osUtil.cpuUsage(function (v) {
@@ -174,7 +177,7 @@ function initChat() {
 	runningShell = ptyProcess;
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
-		// console.log(`////> ${res}`);
+		console.log(`//> ${res}`);
 		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: failed to load model from")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
