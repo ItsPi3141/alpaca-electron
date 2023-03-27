@@ -9,23 +9,26 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "electron .",
-		"make-win": "npx electron-packager . AlpacaElectron --overwrite --platform=win32 --arch=x64 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"make-win": "npx electron-packager . alpaca-electron --overwrite --platform=win32 --arch=x64 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
 		"pack-win": "node installers/windows/createinstaller.js",
 		"win": "npm run make-win && npm run pack-win",
-		"make-mac-x64": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=x64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
-		"make-mac-arm64": "npx electron-packager . AlpacaElectron --overwrite --platform=darwin --arch=arm64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
-		"pack-mac-x64": "electron-installer-dmg release-builds/AlpacaElectron-darwin-x64/AlpacaElectron.app \"Alpaca Electron\" --out=release-builds/dmg/x64 --icon=icon/mac/icon.icns --icon-size=128 --title=\"Alpaca Electron\" --overwrite",
-		"pack-mac-arm64": "electron-installer-dmg release-builds/AlpacaElectron-darwin-arm64/AlpacaElectron.app \"Alpaca Electron\" --out=release-builds/dmg/arm64 --icon=icon/mac/icon.icns --icon-size=128 --title=\"Alpaca Electron\" --overwrite",
+		"make-mac-x64": "npx electron-packager . alpaca-electron --overwrite --platform=darwin --arch=x64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"make-mac-arm64": "npx electron-packager . alpaca-electron --overwrite --platform=darwin --arch=arm64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName=\"Alpaca Electron\"",
+		"pack-mac-x64": "electron-installer-dmg release-builds/alpaca-electron-darwin-x64/alpaca-electron.app \"Alpaca Electron\" --out=release-builds/dmg/x64 --icon=icon/mac/icon.icns --icon-size=128 --title=\"Alpaca Electron\" --overwrite",
+		"pack-mac-arm64": "electron-installer-dmg release-builds/alpaca-electron-darwin-arm64/alpaca-electron.app \"Alpaca Electron\" --out=release-builds/dmg/arm64 --icon=icon/mac/icon.icns --icon-size=128 --title=\"Alpaca Electron\" --overwrite",
 		"mac-x64": "npm run make-mac-x64 && npm run pack-mac-x64",
 		"mac-arm64": "npm run make-mac-arm64 && npm run pack-mac-arm64",
 		"rebuild": ".\\node_modules\\.bin\\electron-rebuild",
-		"rebuild-linux": "./node_modules/.bin/electron-rebuild"
+		"rebuild-linux": "npx --openssl_fips='' electron-rebuild",
+		"make-linux-x64": "npx electron-packager . alpaca-electron --overwrite --platform=linux --arch=x64 --icon=icon/png/128x128.png --prune=true --electron-version=13.6.9 --app-copyright='Pi' --out=./release-builds  --version-string.CompanyName=Pi --version-string.ProductName='Alpaca Electron'",
+		"pack-linux-x64": "tar czf release-builds/alpaca-electron-linux-x64.tar.gz release-builds/alpaca-electron-linux-x64",
+    	"linux-x64": "npm run rebuild-linux && npm run make-linux-x64 && npm run pack-linux-x64"
 	},
 	"dependencies": {
 		"@electron/remote": "^2.0.9",
 		"electron-store": "^8.1.0",
 		"express": "^4.18.2",
-		"fs": "^0.0.1-security",
+		"@npmcli/fs": "^3.1.0",
 		"node-pty-prebuilt-multiarch": "^0.10.1-pre.5",
 		"os-utils": "^0.0.14",
 		"path": "^0.12.7"
@@ -33,7 +36,7 @@
 	"devDependencies": {
 		"electron": "^13.6.9",
 		"electron-packager": "^17.1.1",
-		"electron-rebuild": "^3.2.9",
+		"@electron/rebuild": "^3.2.10",
 		"electron-winstaller": "^5.1.0"
 	}
 }
