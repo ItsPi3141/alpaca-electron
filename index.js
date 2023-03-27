@@ -170,7 +170,7 @@ function initChat() {
 	runningShell = ptyProcess;
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
-		// console.log(`////> ${res}`);
+		console.log(`//> ${res}`);
 		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: failed to load model from")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
