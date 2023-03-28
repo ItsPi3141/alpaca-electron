@@ -15,11 +15,11 @@ function getInstallerConfig() {
 	const outPath = path.join(rootPath, "release-builds");
 
 	return Promise.resolve({
-		appDirectory: path.join(outPath, "AlpacaElectron-win32-x64/"),
+		appDirectory: path.join(outPath, "Alpaca Electron-win32-x64/"),
 		authors: "Pi",
 		noMsi: true,
 		outputDirectory: path.join(outPath, "windows-installer"),
-		exe: "AlpacaElectron.exe",
+		exe: "Alpaca Electron.exe",
 		setupExe: "Alpaca-Electron-setup-win-v" + version + ".exe",
 		setupIcon: path.join(rootPath, "icon", "win", "icon.ico"),
 		iconUrl: "https://raw.githubusercontent.com/ItsPi3141/alpaca-chat/main/icon/win/icon.ico",
