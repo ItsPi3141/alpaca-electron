@@ -1,9 +1,3 @@
-// checks if the app is being run as an installer
-const setupEvents = require("./installers/setupEvents");
-if (setupEvents.handleSquirrelEvent()) {
-	return;
-}
-
 const { BrowserWindow, app, ipcMain, dialog } = require("electron");
 const path = require("path");
 require("@electron/remote/main").initialize();
@@ -71,7 +65,7 @@ for (let i = 1; i < sysThreads; i = i * 2) {
 	threads = i;
 }
 if (sysThreads == 4) {
-	threads = 4
+	threads = 4;
 }
 ipcMain.on("cpuUsage", () => {
 	osUtil.cpuUsage(function (v) {

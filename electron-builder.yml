@@ -1,0 +1,11 @@
+appId: com.pi.alpaca.electron
+nsis:
+    artifactName: ${name}-${version}-setup.${ext}
+    shortcutName: ${productName}
+    uninstallDisplayName: ${productName}
+    createDesktopShortcut: always
+    installerIcon: icon/win/icon.ico
+    uninstallerIcon: icon/win/icon.ico
+    deleteAppDataOnUninstall: true
+npmRebuild: false
+asar: false

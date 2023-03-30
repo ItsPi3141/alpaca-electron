@@ -11,7 +11,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "electron .",
 		"make-win": "npx electron-packager . --overwrite --platform=win32 --arch=x64 --icon=icon/win/icon.ico --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=release-builds  --version-string.CompanyName=Pi",
-		"pack-win": "node installers/windows/createinstaller.js",
+		"pack-win": "npx electron-builder --win --config --prepackaged \"release-builds/Alpaca Electron-win32-x64\"",
 		"win": "npm run make-win && npm run pack-win",
 		"make-mac-x64": "npx electron-packager . --overwrite --platform=darwin --arch=x64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi",
 		"make-mac-arm64": "npx electron-packager . --overwrite --platform=darwin --arch=arm64 --icon=icon/mac/icon.icns --prune=true --electron-version=13.6.9 --app-copyright=\"Pi\" --out=./release-builds  --version-string.CompanyName=Pi",
@@ -37,7 +37,7 @@
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.10",
 		"electron": "^13.6.9",
-		"electron-packager": "^17.1.1",
-		"electron-winstaller": "^5.1.0"
+		"electron-builder": "^23.6.0",
+		"electron-packager": "^17.1.1"
 	}
 }

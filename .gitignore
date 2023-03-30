@@ -5,4 +5,5 @@ models/*
 !models/.gitkeep
 
 release-builds
+dist
 .DS_Store
