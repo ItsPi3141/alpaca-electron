@@ -1,6 +1,6 @@
 appId: com.pi.alpaca.electron
 nsis:
-    artifactName: ${name}-${version}-setup.${ext}
+    artifactName: Alpaca-Electron-setup-win-${version}.${ext}
     shortcutName: ${productName}
     uninstallDisplayName: ${productName}
     createDesktopShortcut: always
