@@ -124,6 +124,6 @@ Alpaca Electron
 
 ## 👨‍💻 Credits
 
-Credits go to [antimatter15](https://github.com/antimatter15/alpaca.cpp) for creating alpaca.cpp and to [ggerganov](https://github.com/ggerganov/llama.cpp) for creating llama.cpp, the backbones behind alpaca.cpp. Finally, credits go to Meta and Stanford for creating the LLaMA and Alpaca models, respectively.
+Credits go to [@antimatter15](https://github.com/antimatter15/alpaca.cpp) for creating alpaca.cpp and to [@ggerganov](https://github.com/ggerganov/llama.cpp) for creating llama.cpp, the backbones behind alpaca.cpp. Finally, credits go to Meta and Stanford for creating the LLaMA and Alpaca models, respectively.
 
 Special thanks to [@keldenl](https://github.com/keldenl) for providing arm64 builds for MacOS
