@@ -33,7 +33,8 @@ RUN apt-get update \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /alpaca-electron
-COPY --chown=1000 --from=alpaca-electron-builder /tmp/alpaca-electron/release-builds/alpaca-electron-linux-x64 /alpaca-electron
+ARG src="/tmp/alpaca-electron/release-builds/Alpaca Electron-linux-x64"
+COPY --chown=1000 --from=alpaca-electron-builder ${src} /alpaca-electron
 
 WORKDIR /alpaca-electron
 
