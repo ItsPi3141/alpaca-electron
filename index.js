@@ -224,9 +224,9 @@ function initChat() {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
 	} else if (platform == "darwin") {
 		const macArch = arch == "x64" ? "chat_mac_x64" : "chat_mac_arm64";
-		runningShell.write(`${path.resolve(__dirname, "bin", macArch)} ${paramArgs} ${chatArgs}\r`);
+		runningShell.write(`"${path.resolve(__dirname, "bin", macArch)}" ${paramArgs} ${chatArgs}\r`);
 	} else {
-		runningShell.write(`${path.resolve(__dirname, "bin", "chat")} ${paramArgs} ${chatArgs}\r`);
+		runningShell.write(`"${path.resolve(__dirname, "bin", "chat")}" ${paramArgs} ${chatArgs}\r`);
 	}
 }
 ipcMain.on("startChat", () => {
