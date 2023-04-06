@@ -346,11 +346,6 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll(/(<|\[|#+)(current_)?month(>|\]|#+)/gi, new Date().getMonth() + 1);
 			responses[id] = responses[id].replaceAll(/(<|\[|#+)(current_)?day(>|\]|#+)/gi, new Date().getDate());
 
-			//support for codeblocks
-			responses[id] = responses[id].replaceAll("\\begin{code}", `<pre><code>`); //start codeblock
-
-			responses[id] = responses[id].replaceAll("\\end{code}", `</code></pre>`); //end codeblock
-
 			//escape html tag
 			responses[id] = responses[id].replaceAll(/</g, "&lt;");
 			responses[id] = responses[id].replaceAll(/>/g, "&gt;");
