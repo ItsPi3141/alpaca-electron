@@ -172,7 +172,7 @@ function initChat() {
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
 		console.log(`//> ${res}`);
-		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: failed to load model from")) {
+		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: error: failed to load model")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
 		} else if (res.includes("\n>") && !alpacaReady) {
@@ -218,14 +218,15 @@ function initChat() {
 			});
 		}
 	});
-	const chatArgs = `-m "${modelPath}" --temp 0.9 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 64 --repeat_penalty 1.5`;
+	const chatArgs = `--interactive-first -ins -i -r "User:" -f ${path.resolve(__dirname, "bin", "prompts", "alpaca.txt")}`;
+	const paramArgs = `-m "${modelPath}" --temp 0.9 --top_k 69 --top_p 0.9 --threads ${threads} --repeat_last_n 64 --repeat_penalty 1.3`;
 	if (platform == "win32") {
-		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${chatArgs}\r`);
+		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
 	} else if (platform == "darwin") {
 		const macArch = arch == "x64" ? "chat_mac_x64" : "chat_mac_arm64";
-		runningShell.write(`${path.resolve(__dirname, "bin", macArch)}  -m "${modelPath}" ${chatArgs}\r`);
+		runningShell.write(`${path.resolve(__dirname, "bin", macArch)} ${paramArgs} ${chatArgs}\r`);
 	} else {
-		runningShell.write(`${path.resolve(__dirname, "bin", "chat")} -m "${modelPath}" ${chatArgs}\r`);
+		runningShell.write(`${path.resolve(__dirname, "bin", "chat")} ${paramArgs} ${chatArgs}\r`);
 	}
 }
 ipcMain.on("startChat", () => {
