@@ -32,11 +32,10 @@ Alpaca Electron
 - [x] Runs on CPU, anyone can run it without an expensive graphics card
 - [x] No external dependencies required, everything is included in the installer
 - [x] "Borrowed" UI from *that* popular chat AI :trollface:
-- [x] Supports Windows and MacOS
+- [x] Supports Windows, MacOS, and Linux (untested)
 - [x] Docker-ized 🐋
-- [x] Linux support
+- [x] Context memory
 - [ ] Chat history
-- [ ] Context memory
 - [ ] Integration with Stable Diffusion
 
 ## 🎞 Demo
