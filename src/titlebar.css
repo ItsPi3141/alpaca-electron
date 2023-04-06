@@ -6,6 +6,8 @@
 	width: calc(100% - 8px);
 	background-color: transparent;
 	padding: 4px;
+	cursor: initial;
+	user-select: none;
 }
 #titlebar {
 	z-index: 9999;
