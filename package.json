@@ -22,7 +22,7 @@
 		"rebuild": ".\\node_modules\\.bin\\electron-rebuild",
 		"rebuild-linux": "npx --openssl_fips='' electron-rebuild",
 		"make-linux-x64": "npx electron-packager . --overwrite --platform=linux --arch=x64 --icon=icon/png/128x128.png --prune=true --electron-version=13.6.9 --app-copyright='Pi' --out=./release-builds  --version-string.CompanyName=Pi",
-		"pack-linux-x64": "tar czf release-builds/alpaca-electron-linux-x64.tar.gz \"release-builds/Alpaca Electron-linux-x64\"",
+		"pack-linux-x64": "tar czf release-builds/Alpaca-Electron-linux-x64-vx.x.x.tar.gz \"release-builds/Alpaca Electron-linux-x64\"",
 		"linux-x64": "npm run rebuild-linux && npm run make-linux-x64 && npm run pack-linux-x64"
 	},
 	"dependencies": {
