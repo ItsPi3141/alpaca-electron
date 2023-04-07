@@ -68,6 +68,7 @@ Alpaca Electron
 
 ### Windows
 - If the model has been loaded into RAM but text generation doesn't seem start, [check](https://ark.intel.com/content/www/us/en/ark.html#@Processors) to see if your CPU is compatible with the [AVX2](https://edc.intel.com/content/www/us/en/design/ipla/software-development-platforms/client/platforms/alder-lake-desktop/12th-generation-intel-core-processors-datasheet-volume-1-of-2/002/intel-advanced-vector-extensions-2-intel-avx2/) instruction set. If it does not support AVX2, Alpaca Electron will use AVX instead, which is much slower so be patient. 
+- If you get an error saying "vcruntime140_1.dll is missing" or nothing happens at all and the model was not loaded into RAM, try installing the [Microsoft Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe). 
 
 ### MacOS
 - If you get an error that says "App can't be opened because it is from an unidentified developer.", go to the Applications folder. Then, hold the control key and click on the app. Then click "Open", then click "Open" when it gives you a warning. Your preference will be saved and MacOS will let you open the app normally from now on. 
