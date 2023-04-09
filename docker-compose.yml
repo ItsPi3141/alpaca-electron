@@ -1,9 +1,15 @@
 version: '3.7'
+
 services:
   alpaca-electron:
     build: .
     volumes:
+      - config:/home/debian/.config
       - ./models:/alpaca-electron/models
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       DISPLAY: ${DISPLAY}
+
+volumes:
+  config:
+    external: false

@@ -6,20 +6,18 @@ RUN apt-get update \
  && apt-get install -yq --no-install-recommends git build-essential ca-certificates \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/antimatter15/alpaca.cpp.git /tmp/alpaca.cpp
-WORKDIR /tmp/alpaca.cpp
-
-RUN make chat
+RUN git clone https://github.com/ggerganov/llama.cpp /tmp/llama.cpp
+RUN cd /tmp/llama.cpp && make -j
 
 FROM node:19.8 as alpaca-electron-builder
 
 USER root
 
 COPY . /tmp/alpaca-electron
-COPY --from=alpaca-cpp-builder /tmp/alpaca.cpp/chat /tmp/alpaca-electron/bin/chat
+COPY --from=alpaca-cpp-builder /tmp/llama.cpp/main /tmp/alpaca-electron/bin/chat
 WORKDIR /tmp/alpaca-electron
 
-RUN npm install --save-dev
+RUN npm install
 RUN npm run linux-x64 
 
 FROM debian:bullseye-slim
@@ -42,7 +40,8 @@ RUN chown root chrome-sandbox
 RUN chmod 4755 chrome-sandbox
 
 RUN useradd -m -u 1000 debian
-USER 1000
+RUN mkdir -p /home/debian/.config && chown debian:debian /home/debian/.config
 
+USER 1000
 ENTRYPOINT [ "tini", "--" ]
-CMD [ "bash", "-c", "/alpaca-electron/alpaca-electron --no-sandbox & sleep 5 && while [[ $(ps | grep electron | wc -l) -gt 0 ]]; do sleep 5; done" ]
+CMD [ "bash", "-c", "/alpaca-electron/Alpaca\\ Electron --no-sandbox & sleep 5 && while [[ $(ps | grep 'Alpaca\\ Electron' | wc -l) -gt 0 ]]; do sleep 5; done" ]
