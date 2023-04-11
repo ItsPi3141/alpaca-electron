@@ -72,6 +72,7 @@ Alpaca Electron
 
 ### MacOS
 - If you get an error that says "App can't be opened because it is from an unidentified developer.", go to the Applications folder. Then, hold the control key and click on the app. Then click "Open", then click "Open" when it gives you a warning. Your preference will be saved and MacOS will let you open the app normally from now on. 
+- If the above method does not work, try running the following command in terminal: `xattr -cr /Applications/Alpaca\ Electron.app/`
 
 ### Linux
 
