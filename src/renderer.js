@@ -327,7 +327,7 @@ ipcRenderer.on("result", async (_event, { data }) => {
 			responses[id] = responses[id].replaceAll(/\r?\n\x1B\[\d+;\d+H./g, "");
 			responses[id] = responses[id].replaceAll(/\x08\r?\n?/g, "");
 
-			responses[id] = responses[id].replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;"); //tab chracters
+			responses[id] = responses[id].replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;"); //tab characters
 			responses[id] = responses[id].replaceAll("\\b", "&nbsp;"); //no break space
 			responses[id] = responses[id].replaceAll("\\f", "&nbsp;"); //no break space
 			responses[id] = responses[id].replaceAll("\\r", "\n"); //sometimes /r is used in codeblocks
