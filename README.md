@@ -97,9 +97,9 @@ Alpaca Electron
 >
 >Change your current directory to the build target:
 >
->```cd release-builds/alpaca-electron-linux-x64```
+>```cd release-builds/'Alpaca Electron-linux-x64'```
 >
->Run the application with ```./alpaca-electron```
+>Run the application with ```./'Alpaca Electron'```
 
 ### Docker Compose
 
