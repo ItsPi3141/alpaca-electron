@@ -28,7 +28,7 @@ Alpaca Electron
 ## 📃 Features + to-do
 
 - [x] Runs locally on your computer, internet connection is not needed except when downloading models
-- [x] Compact and efficient since it uses [alpaca.cpp](https://github.com/antimatter15/alpaca.cpp) as it's backend
+- [x] Compact and efficient since it uses [llama.cpp](https://github.com/ggerganov/llama.cpp) as its backend (which supports Alpaca & Vicuna too)
 - [x] Runs on CPU, anyone can run it without an expensive graphics card
 - [x] No external dependencies required, everything is included in the installer
 - [x] "Borrowed" UI from *that* popular chat AI :trollface:
