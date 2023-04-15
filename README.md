@@ -76,7 +76,7 @@ Alpaca Electron
 
 ### Linux
 
-- You can either download the prebuilt binary (packaged as tar.gz), extract it and execute it with ```./alpaca-electron``` or build the application on yourself.
+- You can either download the prebuilt app (packaged as tar.gz) from the releases page, extract it and execute it with ```./"alpaca electron"``` or build the application on yourself.
 
 - If you want to build the application yourself:
 >Clone the repository:
