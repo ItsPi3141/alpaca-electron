@@ -183,7 +183,7 @@
 				</div>
 				<div id="path-dialog" class="dialog-content">
 					<p>Enter the filepath for an Alpaca model.</p>
-					<p>Please make sure it is a new version of the GGML model. The old one no longer works.</p>
+					<p>Please make sure it is a new version of the GGML model (q4_1). The old one (q4_0) no longer works.</p>
 					<div style="display: flex; gap: 8px">
 						<input type="text" />
 						<button class="primary">
@@ -195,6 +195,24 @@
 						</button>
 					</div>
 					<p class="error-text" style="display: none">Invalid file path</p>
+				</div>
+				<div class="dialog-button">
+					<button class="secondary">Cancel</button>
+					<button class="primary">Confirm</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- STARTING SETTINGS DIALOG -->
+		<div id="settings-dialog-bg" class="dialog-bg hidden">
+			<div class="dialog-box">
+				<div class="dialog-title">
+					<h3>Settings</h3>
+				</div>
+				<div id="settings-dialog" class="dialog-content">
+					<div class="settings-items">
+						
+					</div>
 				</div>
 				<div class="dialog-button">
 					<button class="secondary">Cancel</button>

@@ -219,7 +219,7 @@ function initChat() {
 		}
 	});
 	const chatArgs = `--interactive-first -i -ins -r "User:" -f "${path.resolve(__dirname, "bin", "prompts", "alpaca.txt")}"`;
-	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp 0.5 --top_k 420 --top_p 0.9 --threads ${threads} --repeat_last_n 64 --repeat_penalty 1.3`;
+	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp 0.8 --top_k 200 --top_p 0.9 --threads ${threads} --batch_size ${threads} --repeat_last_n 64 --repeat_penalty 1.3`;
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
 	} else if (platform == "darwin") {
@@ -242,7 +242,12 @@ ipcMain.on("message", (_event, { data }) => {
 });
 ipcMain.on("stopGeneration", () => {
 	if (runningShell) {
-		runningShell.write("\x03");
+		runningShell.kill();
+		runningShell = undefined;
+		currentPrompt = undefined;
+		alpacaReady = false;
+		alpacaHalfReady = false;
+		initChat();
 		setTimeout(() => {
 			win.webContents.send("result", {
 				data: "\n\n<end>"

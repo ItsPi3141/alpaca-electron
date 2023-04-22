@@ -113,11 +113,9 @@ const config = {
 	// html: true,
 	models: []
 };
-const socket = io();
 const form = document.getElementById("form");
 const stopButton = document.getElementById("stop");
 const input = document.getElementById("input");
-const model = document.getElementById("model");
 const messages = document.getElementById("messages");
 
 input.addEventListener("keydown", () => {
@@ -193,24 +191,6 @@ const loading = (on) => {
 		document.querySelector(".loading").classList.add("hidden");
 	}
 };
-document.querySelector(".form-header").addEventListener("input", (e) => {
-	if (e.target.tagName === "SELECT") {
-		if (e.target.id == "model") {
-			console.log(e.target.id);
-			if (config[e.target.name] != config.models[e.target.selectedIndex]) {
-				socket.emit("request", {
-					method: "stop"
-				});
-			}
-			config[e.target.name] = config.models[e.target.selectedIndex];
-			console.log(config.models[e.target.selectedIndex]);
-		}
-	} else if (e.target.type === "checkbox") {
-		config[e.target.name] = e.target.checked;
-	} else {
-		config[e.target.name] = e.target.value;
-	}
-});
 
 form.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -223,6 +203,7 @@ form.addEventListener("submit", (e) => {
 		loading(config.prompt);
 		input.value = "";
 		isRunningModel = true;
+		stopButton.removeAttribute("disabled");
 		form.setAttribute("class", isRunningModel ? "running-model" : "");
 		gen++;
 		setTimeout(() => {
@@ -246,6 +227,7 @@ stopButton.addEventListener("click", (e) => {
 	e.preventDefault();
 	e.stopPropagation();
 	ipcRenderer.send("stopGeneration");
+	stopButton.setAttribute("disabled", "true");
 	setTimeout(() => {
 		isRunningModel = false;
 		form.setAttribute("class", isRunningModel ? "running-model" : "");
@@ -273,9 +255,6 @@ const say = (msg, id, isUser) => {
 	}
 	messages.append(item);
 };
-socket.emit("request", {
-	method: "installed"
-});
 var responses = [];
 
 function setHomepage() {
@@ -494,6 +473,7 @@ document.getElementById("clear").addEventListener("click", () => {
 
 document.getElementById("clear-chat").addEventListener("click", () => {
 	stopButton.click();
+	stopButton.removeAttribute("disabled");
 	document.querySelectorAll("#messages li").forEach((element) => {
 		element.remove();
 	});
