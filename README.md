@@ -37,6 +37,7 @@ Alpaca Electron
 - [x] Context memory
 - [ ] Chat history
 - [ ] Integration with Stable Diffusion
+- [ ] DuckDuckGo integration for web access
 
 ## 🎞 Demo
 
