@@ -28,7 +28,7 @@ Alpaca Electron
 ## 📃 Features + to-do
 
 - [x] Runs locally on your computer, internet connection is not needed except when downloading models
-- [x] Compact and efficient since it uses [alpaca.cpp](https://github.com/antimatter15/alpaca.cpp) as it's backend
+- [x] Compact and efficient since it uses [llama.cpp](https://github.com/ggerganov/llama.cpp) as its backend (which supports Alpaca & Vicuna too)
 - [x] Runs on CPU, anyone can run it without an expensive graphics card
 - [x] No external dependencies required, everything is included in the installer
 - [x] "Borrowed" UI from *that* popular chat AI :trollface:
@@ -37,6 +37,7 @@ Alpaca Electron
 - [x] Context memory
 - [ ] Chat history
 - [ ] Integration with Stable Diffusion
+- [ ] DuckDuckGo integration for web access
 
 ## 🎞 Demo
 
@@ -76,7 +77,7 @@ Alpaca Electron
 
 ### Linux
 
-- You can either download the prebuilt binary (packaged as tar.gz), extract it and execute it with ```./alpaca-electron``` or build the application on yourself.
+- You can either download the prebuilt app (packaged as tar.gz) from the releases page, extract it and execute it with ```./"alpaca electron"``` or build the application on yourself.
 
 - If you want to build the application yourself:
 >Clone the repository:
