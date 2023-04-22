@@ -17,7 +17,7 @@ function createWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
-			devTools: false
+			devTools: true
 		},
 		titleBarStyle: "hidden",
 		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") : path.join(__dirname, "icon", "png", "128x128.png")
@@ -27,7 +27,7 @@ function createWindow() {
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
-	// win.webContents.openDevTools();
+	win.webContents.openDevTools();
 }
 
 app.on("second-instance", (event, argv, cwd) => {
@@ -49,11 +49,6 @@ app.on("activate", () => {
 });
 app.on("before-quit", () => {
 	if (runningShell) runningShell.kill();
-});
-
-ipcMain.on("reloadApp", () => {
-	app.relaunch();
-	app.exit();
 });
 
 // OS STATS
@@ -110,7 +105,7 @@ const store = new Store();
 const fs = require("fs");
 var modelPath = store.get("modelPath");
 
-ipcMain.on("checkModelPath", () => {
+function checkModelPath() {
 	modelPath = store.get("modelPath");
 	if (modelPath) {
 		if (fs.existsSync(path.resolve(modelPath))) {
@@ -121,7 +116,8 @@ ipcMain.on("checkModelPath", () => {
 	} else {
 		win.webContents.send("modelPathValid", { data: false });
 	}
-});
+}
+ipcMain.on("checkModelPath", checkModelPath);
 
 ipcMain.on("checkPath", (_event, { data }) => {
 	if (data) {
@@ -162,6 +158,19 @@ const stripAnsi = (str) => {
 	return str.replace(regex, "");
 };
 
+function restart() {
+	console.log("restarting");
+	win.webContents.send("result", {
+		data: "\n\n<end>"
+	});
+	runningShell.kill();
+	runningShell = undefined;
+	currentPrompt = undefined;
+	alpacaReady = false;
+	alpacaHalfReady = false;
+	initChat();
+}
+
 function initChat() {
 	if (runningShell) {
 		win.webContents.send("ready");
@@ -172,7 +181,7 @@ function initChat() {
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
 		console.log(`//> ${res}`);
-		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open")) && res.includes("main: error: failed to load model")) {
+		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open") || res.includes("llama_init_from_file: failed to load model")) && res.includes("main: error: failed to load model")) {
 			runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
 		} else if (res.includes("\n>") && !alpacaReady) {
@@ -197,16 +206,7 @@ function initChat() {
 			store.set("supportsAVX2", false);
 			initChat();
 		} else if (res.match(/PS [A-Z]:.*>/) && platform == "win32" && alpacaReady) {
-			console.log("restarting");
-			win.webContents.send("result", {
-				data: "\n\n<end>"
-			});
-			runningShell.kill();
-			runningShell = undefined;
-			currentPrompt = undefined;
-			alpacaReady = false;
-			alpacaHalfReady = false;
-			initChat();
+			restart();
 		} else if (res.includes("\n>") && alpacaReady) {
 			win.webContents.send("result", {
 				data: "\n\n<end>"
@@ -218,8 +218,17 @@ function initChat() {
 			});
 		}
 	});
+
+	const params = store.get("params") || {
+		repeat_last_n: "64",
+		repeat_penalty: "1.3",
+		top_k: "40",
+		top_p: "0.9",
+		temp: "0.8",
+		seed: "-1"
+	};
 	const chatArgs = `--interactive-first -i -ins -r "User:" -f "${path.resolve(__dirname, "bin", "prompts", "alpaca.txt")}"`;
-	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp 0.8 --top_k 200 --top_p 0.9 --threads ${threads} --batch_size ${threads} --repeat_last_n 64 --repeat_penalty 1.3`;
+	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size ${threads * 4} --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
 	} else if (platform == "darwin") {
@@ -281,6 +290,17 @@ ipcMain.on("pickFile", () => {
 			}
 		});
 });
+
+ipcMain.on("storeParams", (_event, { params }) => {
+	console.log(params);
+	store.set("params", params);
+	restart();
+});
+ipcMain.on("getParams", () => {
+	win.webContents.send("params", store.get("params"));
+});
+
+ipcMain.on("restart", restart);
 
 process.on("unhandledRejection", () => {});
 process.on("uncaughtException", () => {});

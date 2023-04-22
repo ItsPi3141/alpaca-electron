@@ -51,13 +51,22 @@
 					Clear chat
 				</div>
 				<div class="action-button" id="change-model">
-					<svg xmlns="http://www.w3.org/2000/svg" height="1rem" width="1rem" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+					<svg xmlns="http://www.w3.org/2000/svg" height="1rem" width="1rem" fill="currentColor" viewBox="0 0 16 16">
 						<path
 							fill-rule="evenodd"
 							d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"
 						/>
 					</svg>
 					Change model
+				</div>
+				<div class="action-button" id="settings">
+					<svg stroke="currentColor" fill="none" height="1rem" width="1rem" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+						<circle cx="12" cy="12" r="3"></circle>
+						<path
+							d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+						></path>
+					</svg>
+					Settings
 				</div>
 				<div id="resources">
 					<div id="cpu" class="resource-item">
@@ -211,7 +220,18 @@
 				</div>
 				<div id="settings-dialog" class="dialog-content">
 					<div class="settings-items">
-						
+						<p>Repeat last n tokens</p>
+						<input type="number" step="4" min="0" id="repeat_last_n" value="64" placeholder="64" />
+						<p>Repeat penalty</p>
+						<input type="number" step="0.05" min="0" id="repeat_penalty" value="1.3" placeholder="1.3" />
+						<p>Top K</p>
+						<input type="number" step="5" min="0" id="top_k" value="40" placeholder="40" />
+						<p>Top P</p>
+						<input type="number" step="0.05" min="0" id="top_p" value="0.9" placeholder="0.9" />
+						<p>Temperature</p>
+						<input type="number" step="0.05" min="0" max="2" id="temp" value="0.8" placeholder="0.8" />
+						<p>Seed (set to -1 for random)</p>
+						<input type="number" step="1" min="-1" id="seed" value="-1" placeholder="-1" />
 					</div>
 				</div>
 				<div class="dialog-button">

@@ -40,7 +40,7 @@ ipcRenderer.on("pathIsValid", (_event, { data }) => {
 	if (data) {
 		document.querySelector("#path-dialog > p.error-text").style.display = "none";
 		document.getElementById("path-dialog-bg").classList.add("hidden");
-		ipcRenderer.send("reloadApp");
+		ipcRenderer.send("restart");
 	} else {
 		document.querySelector("#path-dialog > p.error-text").style.display = "block";
 	}
@@ -99,20 +99,6 @@ function handleWindowControls() {
 }
 
 var gen = 0;
-const config = {
-	seed: -1,
-	threads: 16,
-	n_predict: 6942069,
-	model: "7B",
-	top_k: 420,
-	top_p: 0.9,
-	temp: 0.9,
-	repeat_last_n: 64,
-	repeat_penalty: 1.3,
-	debug: false,
-	// html: true,
-	models: []
-};
 const form = document.getElementById("form");
 const stopButton = document.getElementById("stop");
 const input = document.getElementById("input");
@@ -131,58 +117,6 @@ input.addEventListener("keyup", () => {
 	});
 });
 
-const renderHeader = (config) => {
-	const fields = [{ key: "debug", type: "checkbox" }, "threads", "n_predict", "repeat_last_n", "repeat_penalty", "top_k", "top_p", "temp", "seed"]
-		.map((key) => {
-			if (typeof key === "string") {
-				return `
-<div class='kv'>
-<label>${key}</label>
-<input 
-  name="${key}" 
-  type='number' 
-  placeholder="${key}" 
-  value="${config[key] || ""}"
->
-</div>`;
-			} else {
-				if (key.type === "checkbox") {
-					return `
-<div class='kv'>
-  <label>${key.key}</label>
-  <label class="switch">
-    <input name="${key.key}" type='checkbox' ${config[key.key] ? "checked" : ""}>
-    <span class="slider round"></span>
-  </label>
-</div>`;
-				}
-			}
-		})
-		.join("");
-
-	config.model = config.models[0];
-	const models = config.models
-		.map((model, i) => {
-			return `<option value="${model}" ${i === 0 ? "selected" : ""}>${model}</option>`;
-		})
-		.join("");
-	return `
-<div class='config-container'>
-  ${fields}
-  <div class='kv'>
-    <label>model</label>
-    <label class="dropdown-arrow">
-      <select id="model" name="model">${models}</select>
-    </label>
-  </div>
-  <div class="kv">
-    <label for="prompt-select">prompt</label>
-    <label class="dropdown-arrow">
-      <select id="prompt-select" name="prompt-select"></select>
-    </label>
-  </div>
-</div>`;
-};
 let isRunningModel = false;
 const loading = (on) => {
 	if (on) {
@@ -197,10 +131,10 @@ form.addEventListener("submit", (e) => {
 	e.stopPropagation();
 	if (form.classList.contains("running-model")) return;
 	if (input.value) {
-		config.prompt = input.value.replaceAll("\n", "\\n");
-		ipcRenderer.send("message", { data: config.prompt });
+		var prompt = input.value.replaceAll("\n", "\\n");
+		ipcRenderer.send("message", { data: prompt });
 		say(input.value, `user${gen}`, true);
-		loading(config.prompt);
+		loading(prompt);
 		input.value = "";
 		isRunningModel = true;
 		stopButton.removeAttribute("disabled");
@@ -342,80 +276,6 @@ ipcRenderer.on("result", async (_event, { data }) => {
 	}
 });
 
-ipcRenderer.on("installedModels", (_events, { data }) => {
-	if (!document.querySelector(".form-header .config-container")) {
-		var header = document.createElement("div");
-		document.querySelector(".form-header").prepend(header);
-		header.outerHTML = renderHeader(config);
-
-		// Load prompts from files
-		const promptSelect = document.getElementById("prompt-select");
-		fetch("./prompts")
-			.then((response) => response.json())
-			.then((prompts) => {
-				console.log(prompts);
-				if (prompts.length === 0) {
-					promptSelect.disabled = true;
-					return;
-				}
-				// Populate prompt options
-				prompts.forEach((prompt) => {
-					const option = document.createElement("option");
-					option.value = prompt.value;
-					option.textContent = prompt.name;
-					promptSelect.appendChild(option);
-				});
-				// Select the "default" prompt if it exists, otherwise select the first prompt
-				const defaultPrompt = prompts.find((prompt) => prompt.name.toLowerCase() === "instruction-alpaca");
-				const initialPrompt = defaultPrompt || prompts[0];
-				promptSelect.value = initialPrompt.value;
-				input.value = initialPrompt.value;
-				setTimeout(() => {
-					input.style.height = "auto";
-					input.style.height = input.scrollHeight + "px";
-				});
-				// Update the input text with the selected prompt value
-				const handlePromptChange = () => {
-					const selectedPromptValue = promptSelect.value;
-					const currentInputValue = input.value;
-					input.value = selectedPromptValue;
-					// Move the cursor to the first instance of ">PROMPT" and select only the word ">PROMPT"
-					const promptIndex = input.value.indexOf(">PROMPT");
-					// Focus the input
-					input.focus();
-					input.setSelectionRange(promptIndex, promptIndex + ">PROMPT".length);
-					setTimeout(() => {
-						input.style.height = "auto";
-						input.style.height = input.scrollHeight + "px";
-					});
-				};
-				promptSelect.addEventListener("change", handlePromptChange);
-				// Create a Reset button
-				const resetButton = document.createElement("button");
-				resetButton.textContent = "Reset";
-				// Append the Reset button to the same container as the dropdown
-				promptSelect.parentNode.appendChild(resetButton);
-				resetButton.addEventListener("click", (e) => {
-					e.preventDefault(); // Prevent form from submitting
-					handlePromptChange();
-				});
-			})
-			.catch((error) => {
-				console.error("Error loading prompts:", error);
-			});
-
-		// document.querySelector(".form-header").innerHTML = renderHeader(config);
-		setHomepage();
-		document.getElementById("model").addEventListener("change", () => {
-			if (document.body.classList.length != 0) {
-				setHomepage();
-			}
-		});
-	} else {
-		config.models.push(response);
-	}
-});
-
 document.querySelectorAll("#feed-placeholder-llama button.card").forEach((e) => {
 	e.addEventListener("click", () => {
 		let text = e.innerText.replace('"', "").replace('" →', "");
@@ -488,4 +348,33 @@ document.getElementById("change-model").addEventListener("click", () => {
 	document.querySelector("#path-dialog-bg > div > div.dialog-button > button.secondary").style.display = "";
 	document.querySelector("#path-dialog-bg > div > div.dialog-title > h3").innerText = "Change model path";
 	document.getElementById("path-dialog-bg").classList.remove("hidden");
+});
+
+document.getElementById("settings").addEventListener("click", () => {
+	document.getElementById("settings-dialog-bg").classList.remove("hidden");
+	ipcRenderer.send("getParams");
+});
+ipcRenderer.on("params", (_event, data) => {
+	document.getElementById("repeat_last_n").value = data.repeat_last_n;
+	document.getElementById("repeat_penalty").value = data.repeat_penalty;
+	document.getElementById("top_k").value = data.top_k;
+	document.getElementById("top_p").value = data.top_p;
+	document.getElementById("temp").value = data.temp;
+	document.getElementById("seed").value = data.seed;
+});
+document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.primary").addEventListener("click", () => {
+	ipcRenderer.send("storeParams", {
+		params: {
+			repeat_last_n: document.getElementById("repeat_last_n").value || document.getElementById("repeat_last_n").placeholder,
+			repeat_penalty: document.getElementById("repeat_penalty").value || document.getElementById("repeat_penalty").placeholder,
+			top_k: document.getElementById("top_k").value || document.getElementById("top_k").placeholder,
+			top_p: document.getElementById("top_p").value || document.getElementById("top_p").placeholder,
+			temp: document.getElementById("temp").value || document.getElementById("temp").placeholder,
+			seed: document.getElementById("seed").value || document.getElementById("seed").placeholder
+		}
+	});
+	document.getElementById("settings-dialog-bg").classList.add("hidden");
+});
+document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.secondary").addEventListener("click", () => {
+	document.getElementById("settings-dialog-bg").classList.add("hidden");
 });
