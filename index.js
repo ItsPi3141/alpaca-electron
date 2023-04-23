@@ -30,7 +30,7 @@ function createWindow() {
 	win.webContents.openDevTools();
 }
 
-app.on("second-instance", (event, argv, cwd) => {
+app.on("second-instance", () => {
 	if (win) {
 		if (win.isMinimized()) win.restore();
 		win.focus();
