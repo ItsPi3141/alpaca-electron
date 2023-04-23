@@ -265,7 +265,8 @@ ipcMain.on("startChat", () => {
 ipcMain.on("message", async (_event, { data }) => {
 	currentPrompt = data;
 	if (runningShell) {
-		runningShell.write(`${await queryToPrompt(data)}\r`);
+// 		runningShell.write(`${await queryToPrompt(data)}\r`);
+		runningShell.write(`${data}\r`);
 	}
 });
 ipcMain.on("stopGeneration", () => {
