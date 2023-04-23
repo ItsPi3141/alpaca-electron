@@ -17,7 +17,7 @@ function createWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
-			devTools: true
+			devTools: false
 		},
 		titleBarStyle: "hidden",
 		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") : path.join(__dirname, "icon", "png", "128x128.png")
@@ -27,7 +27,7 @@ function createWindow() {
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 }
 
 app.on("second-instance", () => {
@@ -132,6 +132,25 @@ ipcMain.on("checkPath", (_event, { data }) => {
 		win.webContents.send("pathIsValid", { data: false });
 	}
 });
+
+// DUCKDUCKGO SEARCH FUNCTION
+const DDG = require("duck-duck-scrape");
+async function queryToPrompt(text) {
+	const searchResults = await DDG.search(text, {
+		safeSearch: DDG.SafeSearchType.OFF
+	});
+	if (!searchResults.noResults) {
+		var convertedText = "Web search results:\\n\\n";
+		for (let i = 0; i < searchResults.results.length && i < 3; i++) {
+			convertedText += `"${searchResults.results[i].description.replaceAll(/<\/?b>/gi, "")}"\\n\\n`;
+		}
+		convertedText += `Instructions: Using the provided web search results, write a comprehensive reply to the given query. \n\nQuery: `;
+		convertedText += text;
+		return convertedText;
+	} else {
+		return text;
+	}
+}
 
 // RUNNING CHAT
 const pty = require("node-pty-prebuilt-multiarch");
@@ -242,11 +261,10 @@ ipcMain.on("startChat", () => {
 	initChat();
 });
 
-ipcMain.on("message", (_event, { data }) => {
-	// console.log(`User says: ${data}`);
+ipcMain.on("message", async (_event, { data }) => {
 	currentPrompt = data;
 	if (runningShell) {
-		runningShell.write(`${data}\r`);
+		runningShell.write(`${await queryToPrompt(data)}\r`);
 	}
 });
 ipcMain.on("stopGeneration", () => {
