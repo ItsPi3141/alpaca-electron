@@ -137,15 +137,16 @@ ipcMain.on("checkPath", (_event, { data }) => {
 const DDG = require("duck-duck-scrape");
 async function queryToPrompt(text) {
 	const searchResults = await DDG.search(text, {
-		safeSearch: DDG.SafeSearchType.OFF
+		safeSearch: DDG.SafeSearchType.MODERATE
 	});
 	if (!searchResults.noResults) {
-		var convertedText = "Web search results:\\n\\n";
-		for (let i = 0; i < searchResults.results.length && i < 3; i++) {
-			convertedText += `"${searchResults.results[i].description.replaceAll(/<\/?b>/gi, "")}"\\n\\n`;
-		}
-		convertedText += `Instructions: Using the provided web search results, write a comprehensive reply to the given query. \n\nQuery: `;
+		var convertedText = `Using the given web search results, answer the following query: `;
 		convertedText += text;
+		convertedText += "\\n\\n### INPUT\\n\\n";
+		convertedText += "Here are the web search results:\\n\\n";
+		for (let i = 0; i < searchResults.results.length && i < 3; i++) {
+			convertedText += `"${searchResults.results[i].description.replaceAll(/<\/?b>/gi, "")}" \\n\\n `;
+		}
 		return convertedText;
 	} else {
 		return text;
@@ -230,7 +231,7 @@ function initChat() {
 			win.webContents.send("result", {
 				data: "\n\n<end>"
 			});
-		} else if (!res.startsWith(currentPrompt) && alpacaReady) {
+		} else if (!res.startsWith(currentPrompt) && !res.startsWith("Using the given web search results, answer the following query:") && alpacaReady) {
 			if (platform == "darwin") res = res.replaceAll("^C", "");
 			win.webContents.send("result", {
 				data: res
@@ -247,7 +248,7 @@ function initChat() {
 		seed: "-1"
 	};
 	const chatArgs = `--interactive-first -i -ins -r "User:" -f "${path.resolve(__dirname, "bin", "prompts", "alpaca.txt")}"`;
-	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size ${threads * 4} --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
+	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size ${threads} --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
 	} else if (platform == "darwin") {
