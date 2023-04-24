@@ -265,7 +265,11 @@ ipcMain.on("startChat", () => {
 ipcMain.on("message", async (_event, { data }) => {
 	currentPrompt = data;
 	if (runningShell) {
-		runningShell.write(`${await queryToPrompt(data)}\r`);
+		if (store.get("params").webAccess) {
+			runningShell.write(`${await queryToPrompt(data)}\r`);
+		} else {
+			runningShell.write(`${data}\r`);
+		}
 	}
 });
 ipcMain.on("stopGeneration", () => {
@@ -317,6 +321,13 @@ ipcMain.on("storeParams", (_event, { params }) => {
 });
 ipcMain.on("getParams", () => {
 	win.webContents.send("params", store.get("params"));
+});
+
+ipcMain.on("webAccess", (_event, value) => {
+	store.set("params", {
+		...store.get("params"),
+		webAccess: value
+	});
 });
 
 ipcMain.on("restart", restart);
