@@ -420,6 +420,7 @@ option {
 	display: inline-block;
 	width: 60px;
 	height: 34px;
+	pointer-events: all;
 }
 
 .switch input {
@@ -433,8 +434,8 @@ option {
 	cursor: pointer;
 	top: 0;
 	left: 6px;
-	height: 14px;
-	width: 36px;
+	height: 1.25rem;
+	width: 2.25rem;
 	background-color: var(--surface-alt);
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
@@ -443,25 +444,22 @@ option {
 .slider:before {
 	position: absolute;
 	content: "";
-	height: 24px;
-	width: 24px;
-	left: -6px;
-	top: -5px;
-	background-color: var(--surface-alt-bright);
+	height: 1rem;
+	width: 1rem;
+	left: 0.125rem;
+	top: 0.125rem;
+	background-color: var(--primary-text);
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 	border-radius: 69px;
 }
 input:checked + .slider {
-	background-color: var(--surface);
-}
-input:checked + .slider:before {
 	background-color: var(--accent);
 }
 input:checked + .slider:before {
-	-webkit-transform: translateX(24px);
-	-ms-transform: translateX(24px);
-	transform: translateX(24px);
+	-webkit-transform: translateX(1rem);
+	-ms-transform: translateX(1rem);
+	transform: translateX(1rem);
 }
 .slider.round {
 	border-radius: 34px;
