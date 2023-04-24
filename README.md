@@ -168,7 +168,7 @@ npm run rebuild
 If you are on Linux, replace `npm run rebuild` with `npm run rebuild-linux`
 
 3. **(OPTIONAL)** Use your own llama.cpp build
-> **Warning**
+> **Warning**  
 > This step is not required. Only do it if you had built llama.cpp yourself and you want to use that build. Otherwise, skip to **step 4**
 If you had built llama.cpp in the previous section, copy the `main` executable file into the `bin` folder inside the alpaca-electron folder. 
 
