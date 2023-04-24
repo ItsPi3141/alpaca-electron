@@ -124,6 +124,71 @@ Alpaca Electron
 
 - If no window opens up run ```docker compose up``` (without the -d). If there is an error like ```Authorization required, but no authorization protocol specified``` run ```xhost local:root``` on your docker host.
 
+## ⚒️ Building
+
+### Prerequisites 
+- [Node.js](https://node.org)
+- [Git](https://git-scm.com)
+- If you're on Windows and are planning on building llama.cpp binaries also, [CMake](https://cmake.org).
+
+### **(OPTIONAL)** Building llama.cpp from source
+1. Clone llama.cpp's GitHub repo
+```sh
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+```
+
+2. Build llama.cpp
+On Windows:
+```cmd
+mkdir build
+cd build
+cmake ..
+cmake . --config Release
+```
+
+On Linux and MacOS:
+```sh
+make
+```
+
+### Running the project from source
+1. Clone the GitHub repo
+```sh
+git clone https://github.com/ItsPi3141/alpaca-electron
+cd alpaca-electron
+```
+
+2. Install node packages
+```sh
+npm install
+npm run rebuild
+```
+> **Info**
+If you are on Linux, replace `npm run rebuild` with `npm run rebuild-linux`
+
+3. **(OPTIONAL)** Use your own llama.cpp build
+> **Warning**
+> This step is not required. Only do it if you had built llama.cpp yourself and you want to use that build. Otherwise, skip to **step 4**
+If you had built llama.cpp in the previous section, copy the `main` executable file into the `bin` folder inside the alpaca-electron folder. 
+
+Make sure the file replaces the correct file. E.g. if you're on Windows, replace chat.exe with your file. If you're on arm64 MacOS, replace chat_mac_arm64. Etc...
+
+4. Start the Electron app
+```sh
+npm start
+```
+
+### Building a release and installer
+Run one of the following commands:
+- `npm run win`
+- `npm run mac-x64`
+- `npm run mac-arm64`
+- `npm run linux-x64`
+
+You can only build for the OS you are running the build on. E.g. if you are on Windows, you can build for Windows, but not for MacOS and Linux. 
+
+
 ## 👨‍💻 Credits
 
 Credits go to [@antimatter15](https://github.com/antimatter15/alpaca.cpp) for creating alpaca.cpp and to [@ggerganov](https://github.com/ggerganov/llama.cpp) for creating llama.cpp, the backbones behind alpaca.cpp. Finally, credits go to Meta and Stanford for creating the LLaMA and Alpaca models, respectively.
