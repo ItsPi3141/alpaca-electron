@@ -174,11 +174,11 @@
 						</div>
 					</div>
 					<div style="display: flex; align-items: center">
-						<label class="switch" style="height: 14px">
+						<label class="switch" style="height: 16px">
 							<input type="checkbox" id="web-access" />
 							<span class="slider round"></span>
 						</label>
-						<p style="margin: 0">Web access</p>
+						<p style="margin: 0">Web access (slower)</p>
 					</div>
 					<div class="info">TIP: shift + enter for multiple lines</div>
 				</form>
@@ -227,18 +227,45 @@
 				</div>
 				<div id="settings-dialog" class="dialog-content">
 					<div class="settings-items">
-						<p>Repeat last n tokens</p>
-						<input type="number" step="4" min="0" id="repeat_last_n" value="64" placeholder="64" />
-						<p>Repeat penalty</p>
-						<input type="number" step="0.05" min="0" id="repeat_penalty" value="1.3" placeholder="1.3" />
-						<p>Top K</p>
-						<input type="number" step="5" min="0" id="top_k" value="40" placeholder="40" />
-						<p>Top P</p>
-						<input type="number" step="0.05" min="0" id="top_p" value="0.9" placeholder="0.9" />
-						<p>Temperature</p>
-						<input type="number" step="0.05" min="0" max="2" id="temp" value="0.8" placeholder="0.8" />
-						<p>Seed (set to -1 for random)</p>
-						<input type="number" step="1" min="-1" id="seed" value="-1" placeholder="-1" />
+						<h3>Llama.cpp settings</h3>
+
+						<div class="item">
+							<p>Repeat last n tokens</p>
+							<input type="number" step="4" min="0" id="repeat_last_n" value="64" placeholder="64" />
+						</div>
+
+						<div class="item">
+							<p>Repeat penalty</p>
+							<input type="number" step="0.05" min="0" id="repeat_penalty" value="1.3" placeholder="1.3" />
+						</div>
+
+						<div class="item">
+							<p>Top k</p>
+							<input type="number" step="5" min="0" id="top_k" value="40" placeholder="40" />
+						</div>
+
+						<div class="item">
+							<p>Top p</p>
+							<input type="number" step="0.05" min="0" id="top_p" value="0.9" placeholder="0.9" />
+						</div>
+
+						<div class="item">
+							<p>Temperature</p>
+							<input type="number" step="0.05" min="0" max="2" id="temp" value="0.8" placeholder="0.8" />
+						</div>
+
+						<div class="item">
+							<p>Seed (set to -1 for random)</p>
+							<input type="number" step="1" min="-1" id="seed" value="-1" placeholder="-1" />
+						</div>
+
+						<div style="height: 32px"></div>
+
+						<h3>Web search settings</h3>
+						<div class="item">
+							<p>Web search result amount</p>
+							<input type="number" step="1" min="1" max="5" id="websearch_amount" value="5" placeholder="5" />
+						</div>
 					</div>
 				</div>
 				<div class="dialog-button">

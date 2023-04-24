@@ -17,7 +17,7 @@ function createWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
-			devTools: false
+			devTools: true
 		},
 		titleBarStyle: "hidden",
 		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") : path.join(__dirname, "icon", "png", "128x128.png")
@@ -27,7 +27,7 @@ function createWindow() {
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
-	// win.webContents.openDevTools();
+	win.webContents.openDevTools();
 }
 
 app.on("second-instance", () => {
@@ -142,12 +142,24 @@ async function queryToPrompt(text) {
 	if (!searchResults.noResults) {
 		var convertedText = `Using the given web search results, answer the following query: `;
 		convertedText += text;
-		convertedText += "\\n\\n### INPUT\\n\\n";
-		convertedText += "Here are the web search results:\\n\\n";
-		for (let i = 0; i < searchResults.results.length && i < 3; i++) {
-			convertedText += `"${searchResults.results[i].description.replaceAll(/<\/?b>/gi, "")}" \\n\\n `;
+		convertedText += "\\n### INPUT: \\n";
+		convertedText += "Here are the web search results: ";
+		var targetResultCount = store.get("params").websearch_amount || 5;
+		if (searchResults.news) {
+			for (let i = 0; i < searchResults.news.length && i < targetResultCount; i++) {
+				convertedText += `${searchResults.news[i].description.replaceAll(/<\/?b>/gi, "")} `;
+			}
+		} else {
+			for (let i = 0; i < searchResults.results.length && i < targetResultCount; i++) {
+				convertedText += `${searchResults.results[i].description.replaceAll(/<\/?b>/gi, "")} `;
+			}
 		}
 		return convertedText;
+		// var convertedText = `Summarize the following text: `;
+		// for (let i = 0; i < searchResults.results.length && i < 3; i++) {
+		// 	convertedText += `${searchResults.results[i].description.replaceAll(/<\/?b>/gi, "")} `;
+		// }
+		// return convertedText;
 	} else {
 		return text;
 	}

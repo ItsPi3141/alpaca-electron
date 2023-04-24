@@ -244,7 +244,7 @@ html.darwin #main {
 	margin: 0;
 	box-sizing: border-box;
 	padding: 0;
-	margin-bottom: 160px;
+	margin-bottom: 200px;
 }
 #messages > li {
 	box-sizing: border-box;
@@ -277,6 +277,9 @@ li {
 }
 #messages > li.bot-msg::before {
 	background-image: url(img/alpaca.png);
+}
+#messages > li.bot-web-msg::before {
+	background-image: url(img/alpaca-web.png);
 }
 
 @-webkit-keyframes spin {
@@ -418,8 +421,8 @@ option {
 .switch {
 	position: relative;
 	display: inline-block;
-	width: 60px;
-	height: 34px;
+	width: 3rem;
+	height: 1rem;
 	pointer-events: all;
 }
 
@@ -586,6 +589,8 @@ input:checked + .slider:before {
 	padding: 1rem;
 	gap: 0.75rem;
 	border-bottom: 1px var(--border) solid;
+	max-height: calc(100vh - 300px);
+	overflow-y: scroll;
 }
 .dialog-content * {
 	margin: 0;
@@ -635,4 +640,13 @@ p.error-text::before {
 #path-dialog button {
 	width: 40px;
 	height: 40px;
+}
+
+.settings-items > .item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.settings-items > .item > input {
+	width: 7.5rem;
 }
