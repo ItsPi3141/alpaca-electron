@@ -179,8 +179,15 @@ const sha256 = async (input) => {
 const say = (msg, id, isUser) => {
 	let item = document.createElement("li");
 	if (id) item.setAttribute("data-id", id);
-	item.classList.add(isUser ? "user-msg" : "bot-msg");
+	item.classList.add(isUser ? "user-msg" : document.getElementById("web-access").checked ? "bot-web-msg" : "bot-msg");
 	console.log(msg);
+
+	//escape html tag
+	if (isUser) {
+		msg = msg.replaceAll(/</g, "&lt;");
+		msg = msg.replaceAll(/>/g, "&gt;");
+	}
+
 	item.innerHTML = msg;
 	if (document.getElementById("bottom").getBoundingClientRect().y - 40 < window.innerHeight) {
 		setTimeout(() => {
@@ -190,16 +197,6 @@ const say = (msg, id, isUser) => {
 	messages.append(item);
 };
 var responses = [];
-
-function setHomepage() {
-	if (document.getElementById("model").value.toLowerCase().startsWith("alpaca")) {
-		document.body.classList.remove("llama");
-		document.body.classList.add("alpaca");
-	} else if (document.getElementById("model").value.toLowerCase().startsWith("llama")) {
-		document.body.classList.remove("alpaca");
-		document.body.classList.add("llama");
-	}
-}
 
 Date.prototype.timeNow = function () {
 	return (this.getHours() < 10 ? "0" : "") + this.getHours() + ":" + (this.getMinutes() < 10 ? "0" : "") + this.getMinutes() + ":" + (this.getSeconds() < 10 ? "0" : "") + this.getSeconds();
@@ -350,6 +347,7 @@ document.getElementById("change-model").addEventListener("click", () => {
 	document.getElementById("path-dialog-bg").classList.remove("hidden");
 });
 
+ipcRenderer.send("getParams");
 document.getElementById("settings").addEventListener("click", () => {
 	document.getElementById("settings-dialog-bg").classList.remove("hidden");
 	ipcRenderer.send("getParams");
@@ -361,6 +359,7 @@ ipcRenderer.on("params", (_event, data) => {
 	document.getElementById("top_p").value = data.top_p;
 	document.getElementById("temp").value = data.temp;
 	document.getElementById("seed").value = data.seed;
+	document.getElementById("web-access").checked = data.webAccess;
 });
 document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.primary").addEventListener("click", () => {
 	ipcRenderer.send("storeParams", {
@@ -370,11 +369,17 @@ document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.p
 			top_k: document.getElementById("top_k").value || document.getElementById("top_k").placeholder,
 			top_p: document.getElementById("top_p").value || document.getElementById("top_p").placeholder,
 			temp: document.getElementById("temp").value || document.getElementById("temp").placeholder,
-			seed: document.getElementById("seed").value || document.getElementById("seed").placeholder
+			seed: document.getElementById("seed").value || document.getElementById("seed").placeholder,
+			webAccess: document.getElementById("web-access").checked,
+			websearch_amount: document.getElementById("websearch_amount").value || document.getElementById("websearch_amount").placeholder
 		}
 	});
 	document.getElementById("settings-dialog-bg").classList.add("hidden");
 });
 document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.secondary").addEventListener("click", () => {
 	document.getElementById("settings-dialog-bg").classList.add("hidden");
+});
+
+document.getElementById("web-access").addEventListener("change", () => {
+	ipcRenderer.send("webAccess", document.getElementById("web-access").checked);
 });
