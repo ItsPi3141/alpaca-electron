@@ -17,7 +17,7 @@ function createWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
-			devTools: true
+			devTools: false
 		},
 		titleBarStyle: "hidden",
 		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") : path.join(__dirname, "icon", "png", "128x128.png")
@@ -27,7 +27,7 @@ function createWindow() {
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 }
 
 app.on("second-instance", () => {

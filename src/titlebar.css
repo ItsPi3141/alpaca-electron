@@ -74,10 +74,10 @@
 	user-select: none;
 }
 #window-controls .button:hover {
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(128, 128, 128, 0.2);
 }
 #window-controls .button:active {
-	background: rgba(255, 255, 255, 0.2);
+	background: rgba(128, 128, 128, 0.3);
 }
 #close-button:hover {
 	background: #e81123 !important;
@@ -87,6 +87,11 @@
 }
 #close-button:active .icon {
 	filter: invert(1);
+}
+@media (prefers-color-scheme: light) {
+	.icon {
+		filter: invert(1);
+	}
 }
 #min-button {
 	grid-column: 1;
