@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  windows-release:
+  windows-x64-release:
     runs-on: windows-latest
     steps:
       - name: Git clone
@@ -39,3 +39,33 @@ jobs:
           name: windows-x64
           path: |
             dist/Alpaca-Electron-win-x64-v${{github.event.inputs.version}}.exe
+
+  macos-x64-release:
+    runs-on: macos-latest
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.15.0
+      
+      - name: Dependencies
+        run: |
+          npm install
+          npm install electron-installer-dmg -g
+          npm run rebuild
+      
+      - name: Build and package
+        run: |
+          npm run make-mac-x64
+          npm run pack-mac-x64
+          mv "release-builds/dmg/x64/Alpaca Electron.dmg" release-builds/dmg/x64/Alpaca-Electron-mac-x64-v${{github.event.inputs.version}}.dmg
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-x64
+          path: |
+            release-builds/dmg/x64/Alpaca-Electron-mac-x64-v${{github.event.inputs.version}}.dmg
