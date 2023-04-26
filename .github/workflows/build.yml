@@ -69,3 +69,34 @@ jobs:
           name: macos-x64
           path: |
             release-builds/dmg/x64/Alpaca-Electron-mac-x64-v${{github.event.inputs.version}}.dmg
+
+  linux-x64-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.15.0
+      
+      - name: Dependencies
+        run: |
+          npm install
+          npm run rebuild-linux
+      
+      - name: Build and package
+        run: |
+          npm run make-linux-x64
+          npm run pack-linux-x64
+          mv release-builds/Alpaca-Electron-linux-x64-vx.x.x.tar.gz release-builds/Alpaca-Electron-linux-x64-v${{github.event.inputs.version}}.tar.gz
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-x64
+          path: |
+            release-builds/Alpaca-Electron-linux-x64-v${{github.event.inputs.version}}.tar.gz
+  
+  
