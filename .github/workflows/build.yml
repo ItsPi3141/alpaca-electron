@@ -36,5 +36,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: windows-x64
           path: |
             dist/Alpaca-Electron-win-x64-v${{github.event.inputs.version}}.exe
