@@ -55,7 +55,7 @@ jobs:
         run: |
           npm install
           npm install electron-installer-dmg -g
-          npm run rebuild
+          npx electron-rebuild
       
       - name: Build and package
         run: |
