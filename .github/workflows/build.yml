@@ -1,0 +1,40 @@
+name: Build and release
+
+on: 
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create new release'
+        required: true
+        type: boolean
+      version:
+        description: "Don't include the v"
+        required: true
+
+jobs:
+  windows-release:
+    runs-on: windows-latest
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.15.0
+      
+      - name: Dependencies
+        run: |
+          npm install
+          npm run rebuild
+          
+      - name: Build and package
+        run: |
+          npm run make-win
+          npm run pack-win
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: |
+            dist/Alpaca-Electron-win-x64-v${{github.event.inputs.version}}.exe
