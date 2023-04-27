@@ -215,14 +215,11 @@ function restart() {
 	win.webContents.send("result", {
 		data: "\n\n<end>"
 	});
-  console.log("terminating shell")
   if (runningShell) runningShell.kill();
-  console.log("unset variables")
 	runningShell = undefined;
 	currentPrompt = undefined;
 	alpacaReady = false;
 	alpacaHalfReady = false;
-  console.log("initChat")
 	initChat();
 }
 
