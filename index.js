@@ -101,7 +101,27 @@ ipcMain.on("os", () => {
 
 // SET-UP
 const Store = require("electron-store");
-const store = new Store();
+const schema = {
+	params: {
+		default: {
+      repeat_last_n: "64",
+      repeat_penalty: "1.3",
+      top_k: "40",
+      top_p: "0.9",
+      temp: "0.8",
+      seed: "-1",
+      webAccess: false,
+      websearch_amount: '5'
+    }
+	},
+  modelPath: {
+    default: "undefined"
+  },
+  supportsAVX2: {
+    default: "undefined"
+  }
+};
+const store = new Store({schema});
 const fs = require("fs");
 var modelPath = store.get("modelPath");
 
@@ -195,7 +215,7 @@ function restart() {
 	win.webContents.send("result", {
 		data: "\n\n<end>"
 	});
-	runningShell.kill();
+  if (runningShell) runningShell.kill();
 	runningShell = undefined;
 	currentPrompt = undefined;
 	alpacaReady = false;
@@ -214,7 +234,7 @@ function initChat() {
 		res = stripAnsi(res);
 		console.log(`//> ${res}`);
 		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open") || res.includes("llama_init_from_file: failed to load model")) && res.includes("main: error: failed to load model")) {
-			runningShell.kill();
+			if (runningShell) runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
 		} else if (res.includes("\n>") && !alpacaReady) {
 			alpacaHalfReady = true;
@@ -228,7 +248,7 @@ function initChat() {
 			console.log("checking avx compat");
 		} else if (res.match(/PS [A-Z]:.*>/) && checkAVX) {
 			console.log("avx2 incompatible, retrying with avx1");
-			runningShell.kill();
+			if (runningShell) runningShell.kill();
 			runningShell = undefined;
 			currentPrompt = undefined;
 			alpacaReady = false;
@@ -251,14 +271,7 @@ function initChat() {
 		}
 	});
 
-	const params = store.get("params") || {
-		repeat_last_n: "64",
-		repeat_penalty: "1.3",
-		top_k: "40",
-		top_p: "0.9",
-		temp: "0.8",
-		seed: "-1"
-	};
+	const params = store.get("params");
 	const chatArgs = `--interactive-first -i -ins -r "User:" -f "${path.resolve(__dirname, "bin", "prompts", "alpaca.txt")}"`;
 	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size ${threads} --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
 	if (platform == "win32") {
@@ -286,7 +299,7 @@ ipcMain.on("message", async (_event, { data }) => {
 });
 ipcMain.on("stopGeneration", () => {
 	if (runningShell) {
-		runningShell.kill();
+		if (runningShell) runningShell.kill();
 		runningShell = undefined;
 		currentPrompt = undefined;
 		alpacaReady = false;

@@ -6,10 +6,12 @@ RUN apt-get update \
  && apt-get install -yq --no-install-recommends git build-essential ca-certificates \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/ggerganov/llama.cpp /tmp/llama.cpp
-RUN cd /tmp/llama.cpp && make -j
+ENV LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
 
-FROM node:19.8 as alpaca-electron-builder
+RUN git clone https://github.com/ggerganov/llama.cpp /tmp/llama.cpp
+RUN cd /tmp/llama.cpp && git checkout master-87a6f84 && make -j
+
+FROM node:20.0-bullseye as alpaca-electron-builder
 
 USER root
 
@@ -44,4 +46,4 @@ RUN mkdir -p /home/debian/.config && chown debian:debian /home/debian/.config
 
 USER 1000
 ENTRYPOINT [ "tini", "--" ]
-CMD [ "bash", "-c", "/alpaca-electron/Alpaca\\ Electron --no-sandbox & sleep 5 && while [[ $(ps | grep 'Alpaca\\ Electron' | wc -l) -gt 0 ]]; do sleep 5; done" ]
+CMD [ "bash", "-c", "/alpaca-electron/Alpaca\\ Electron --no-sandbox --disable-gpu & sleep 5 && while [[ $(ps | grep 'Alpaca\\ Electron' | wc -l) -gt 0 ]]; do sleep 5; done" ]
