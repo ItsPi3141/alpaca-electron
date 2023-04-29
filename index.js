@@ -104,24 +104,24 @@ const Store = require("electron-store");
 const schema = {
 	params: {
 		default: {
-      repeat_last_n: "64",
-      repeat_penalty: "1.3",
-      top_k: "40",
-      top_p: "0.9",
-      temp: "0.8",
-      seed: "-1",
-      webAccess: false,
-      websearch_amount: '5'
-    }
+			repeat_last_n: "64",
+			repeat_penalty: "1.3",
+			top_k: "40",
+			top_p: "0.9",
+			temp: "0.8",
+			seed: "-1",
+			webAccess: false,
+			websearch_amount: "5"
+		}
 	},
-  modelPath: {
-    default: "undefined"
-  },
-  supportsAVX2: {
-    default: "undefined"
-  }
+	modelPath: {
+		default: "undefined"
+	},
+	supportsAVX2: {
+		default: "undefined"
+	}
 };
-const store = new Store({schema});
+const store = new Store({ schema });
 const fs = require("fs");
 var modelPath = store.get("modelPath");
 
@@ -215,7 +215,7 @@ function restart() {
 	win.webContents.send("result", {
 		data: "\n\n<end>"
 	});
-  if (runningShell) runningShell.kill();
+	if (runningShell) runningShell.kill();
 	runningShell = undefined;
 	currentPrompt = undefined;
 	alpacaReady = false;
@@ -257,7 +257,7 @@ function initChat() {
 			checkAVX = false;
 			store.set("supportsAVX2", false);
 			initChat();
-		} else if (res.match(/PS [A-Z]:.*>/) && platform == "win32" && alpacaReady) {
+		} else if (((res.match(/PS [A-Z]:.*>/) && platform == "win32") || (res.match(/bash-[0-9]+\.?[0-9]*\$/) && platform == "darwin") || (res.match(/([a-zA-Z0-9]|_|-)+@([a-zA-Z0-9]|_|-)+:?~(\$|#)/) && platform == "linux")) && alpacaReady) {
 			restart();
 		} else if (res.includes("\n>") && alpacaReady) {
 			win.webContents.send("result", {
