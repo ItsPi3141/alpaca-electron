@@ -257,7 +257,7 @@ function initChat() {
 			checkAVX = false;
 			store.set("supportsAVX2", false);
 			initChat();
-		} else if ((res.match(/PS [A-Z]:.*>/) && platform == "win32") || (res.match(/bash-[0-9]+\.?[0-9]*\$/) && platform == "darwin") || (res.match(/([a-zA-Z0-9]|_|-)+@([a-zA-Z0-9]|_|-)+:?~(\$|#)/) && platform == "linux" && alpacaReady)) {
+		} else if (((res.match(/PS [A-Z]:.*>/) && platform == "win32") || (res.match(/bash-[0-9]+\.?[0-9]*\$/) && platform == "darwin") || (res.match(/([a-zA-Z0-9]|_|-)+@([a-zA-Z0-9]|_|-)+:?~(\$|#)/) && platform == "linux")) && alpacaReady) {
 			restart();
 		} else if (res.includes("\n>") && alpacaReady) {
 			win.webContents.send("result", {
