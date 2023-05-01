@@ -353,6 +353,7 @@ document.getElementById("settings").addEventListener("click", () => {
 	ipcRenderer.send("getParams");
 });
 ipcRenderer.on("params", (_event, data) => {
+	document.getElementById("settings-model").value = data.model_type;
 	document.getElementById("repeat_last_n").value = data.repeat_last_n;
 	document.getElementById("repeat_penalty").value = data.repeat_penalty;
 	document.getElementById("top_k").value = data.top_k;
@@ -364,6 +365,7 @@ ipcRenderer.on("params", (_event, data) => {
 document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.primary").addEventListener("click", () => {
 	ipcRenderer.send("storeParams", {
 		params: {
+			model_type: document.getElementById("settings-model").value,
 			repeat_last_n: document.getElementById("repeat_last_n").value || document.getElementById("repeat_last_n").placeholder,
 			repeat_penalty: document.getElementById("repeat_penalty").value || document.getElementById("repeat_penalty").placeholder,
 			top_k: document.getElementById("top_k").value || document.getElementById("top_k").placeholder,

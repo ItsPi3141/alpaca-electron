@@ -198,8 +198,8 @@
 					</button> -->
 				</div>
 				<div id="path-dialog" class="dialog-content">
-					<p>Enter the filepath for an Alpaca model.</p>
-					<p>Please make sure it is a new version of the GGML model (q4_1). The old one (q4_0) no longer works.</p>
+					<p>Enter the filepath for a LLaMA model.</p>
+					<p>You can change the model type in settings.</p>
 					<div style="display: flex; gap: 8px">
 						<input type="text" />
 						<button class="primary">
@@ -228,6 +228,18 @@
 				<div id="settings-dialog" class="dialog-content">
 					<div class="settings-items">
 						<h3>Llama.cpp settings</h3>
+
+						<div class="item">
+							<label>AI model</label>
+							<label class="dropdown-arrow">
+								<select id="model">
+									<option value="alpaca">Alpaca</option>
+									<option value="vicuna">Vicuna</option>
+									<option value="llama">Llama</option>
+									<option value="other">Other</option>
+								</select>
+							</label>
+						</div>
 
 						<div class="item">
 							<p>Repeat last n tokens</p>

@@ -372,7 +372,7 @@ form.running-model .loading {
 input[type="number"],
 input[type="text"],
 select {
-	margin-bottom: 10px;
+	margin-bottom: 10px !important;
 	border: #fff1 solid 1px;
 	outline: none;
 	background: rgba(0, 0, 0, 0.08);
@@ -391,7 +391,6 @@ select {
 	-moz-appearance: none;
 	appearance: none;
 	cursor: pointer;
-	width: 160px;
 	padding-right: 40px;
 	text-overflow: ellipsis;
 }
@@ -405,8 +404,8 @@ label.dropdown-arrow:after {
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
 	transform: rotate(90deg);
-	right: 10px;
-	top: 10px;
+	right: 5px;
+	top: 5px;
 	padding: 0 0 5px;
 	width: 24px;
 	height: 24px;
@@ -678,6 +677,7 @@ p.error-text::before {
 	justify-content: space-between;
 	align-items: center;
 }
-.settings-items > .item > input {
+.settings-items > .item > input,
+.settings-items > .item select {
 	width: 7.5rem;
 }
