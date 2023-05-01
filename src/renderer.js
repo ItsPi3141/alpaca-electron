@@ -353,7 +353,7 @@ document.getElementById("settings").addEventListener("click", () => {
 	ipcRenderer.send("getParams");
 });
 ipcRenderer.on("params", (_event, data) => {
-	document.getElementById("settings-model").value = data.model_type;
+	document.getElementById("model").value = data.model_type;
 	document.getElementById("repeat_last_n").value = data.repeat_last_n;
 	document.getElementById("repeat_penalty").value = data.repeat_penalty;
 	document.getElementById("top_k").value = data.top_k;
@@ -365,7 +365,7 @@ ipcRenderer.on("params", (_event, data) => {
 document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.primary").addEventListener("click", () => {
 	ipcRenderer.send("storeParams", {
 		params: {
-			model_type: document.getElementById("settings-model").value,
+			model_type: document.getElementById("model").value,
 			repeat_last_n: document.getElementById("repeat_last_n").value || document.getElementById("repeat_last_n").placeholder,
 			repeat_penalty: document.getElementById("repeat_penalty").value || document.getElementById("repeat_penalty").placeholder,
 			top_k: document.getElementById("top_k").value || document.getElementById("top_k").placeholder,
@@ -384,4 +384,31 @@ document.querySelector("#settings-dialog-bg > div > div.dialog-button > button.s
 
 document.getElementById("web-access").addEventListener("change", () => {
 	ipcRenderer.send("webAccess", document.getElementById("web-access").checked);
+});
+
+document.getElementById("settings-preset").addEventListener("change", () => {
+	console.log("hi");
+	const value = document.getElementById("settings-preset").value;
+	if (value == "alpaca") {
+		document.getElementById("model").value = "alpaca";
+		document.getElementById("repeat_last_n").value = 64;
+		document.getElementById("repeat_penalty").value = 1.3;
+		document.getElementById("top_k").value = 420;
+		document.getElementById("top_p").value = 90;
+		document.getElementById("temp").value = 0.9;
+	} else if (value == "vicuna") {
+		document.getElementById("model").value = "vicuna";
+		document.getElementById("repeat_last_n").value = 64;
+		document.getElementById("repeat_penalty").value = 1.1;
+		document.getElementById("top_k").value = 420;
+		document.getElementById("top_p").value = 10;
+		document.getElementById("temp").value = 0.7;
+	} else if (value == "llama") {
+		document.getElementById("model").value = "llama";
+		document.getElementById("repeat_last_n").value = 64;
+		document.getElementById("repeat_penalty").value = 1.3;
+		document.getElementById("top_k").value = 420;
+		document.getElementById("top_p").value = 90;
+		document.getElementById("temp").value = 0.8;
+	}
 });

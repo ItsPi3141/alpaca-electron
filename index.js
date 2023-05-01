@@ -17,7 +17,7 @@ function createWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
-			devTools: true
+			devTools: false
 		},
 		titleBarStyle: "hidden",
 		icon: platform == "darwin" ? path.join(__dirname, "icon", "mac", "icon.icns") : path.join(__dirname, "icon", "png", "128x128.png")
@@ -27,7 +27,7 @@ function createWindow() {
 	win.loadFile(path.resolve(__dirname, "src", "index.html"));
 
 	win.setMenu(null);
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 }
 
 app.on("second-instance", () => {
@@ -276,17 +276,19 @@ function initChat() {
 	if (params.model_type == "alpaca") {
 		var revPrompt = "### Instruction:";
 	} else if (params.model_type == "vicuna") {
-		var revPrompt = "USER:";
+		var revPrompt = "### Human:";
 	} else {
 		var revPrompt = "User:";
 	}
-	if (params.model_type == "alpaca" || params.model_type == "vicuna") {
+	if (params.model_type == "alpaca") {
 		var promptFile = "alpaca.txt";
+	} else if (params.model_type == "vicuna") {
+		var promptFile = "vicuna.txt";
 	} else {
-		var promptFile = "chat-with-llama.txt";
+		var promptFile = "llama.txt";
 	}
-	const chatArgs = `-i -ins -r "${revPrompt}" -f "${path.resolve(__dirname, "bin", "prompts", promptFile)}"`;
-	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size ${threads} --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
+	const chatArgs = `-i --interactive-first -ins -r "${revPrompt}" -f "${path.resolve(__dirname, "bin", "prompts", promptFile)}"`;
+	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size 512 --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
 	if (platform == "win32") {
 		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
 	} else if (platform == "darwin") {

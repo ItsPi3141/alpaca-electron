@@ -224,9 +224,30 @@
 			<div class="dialog-box">
 				<div class="dialog-title">
 					<h3>Settings</h3>
+					<!-- <button class="dialog-close">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x" viewBox="2 2 12 12">
+							<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+						</svg>
+					</button> -->
 				</div>
 				<div id="settings-dialog" class="dialog-content">
 					<div class="settings-items">
+						<h3>Presets</h3>
+						<p>You can choose a preset from here or customize your own settings below.</p>
+						<div style="height: 8px"></div>
+						<div class="item">
+							<label class="dropdown-arrow">
+								<select id="settings-preset">
+									<option value="custom">Custom</option>
+									<option value="alpaca">Alpaca</option>
+									<option value="vicuna">Vicuna</option>
+									<option value="llama">Llama</option>
+								</select>
+							</label>
+						</div>
+
+						<div style="height: 32px"></div>
+
 						<h3>Llama.cpp settings</h3>
 
 						<div class="item">
@@ -282,7 +303,7 @@
 				</div>
 				<div class="dialog-button">
 					<button class="secondary">Cancel</button>
-					<button class="primary">Confirm</button>
+					<button class="primary">Save</button>
 				</div>
 			</div>
 		</div>

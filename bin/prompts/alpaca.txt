@@ -1,1 +1,7 @@
 Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+### Instruction: Hello.
+### Response: Hello. How may I help you today?
+### Instruction: What are the key differences between renewable and non-renewable energy sources?
+### Response: Renewable energy sources are those that can be replenished naturally in a relatively short amount of time, such as solar, wind, hydro, geothermal, and biomass. Non-renewable energy sources, on the other hand, are finite and will eventually be depleted, such as coal, oil, and natural gas. 
+### Instruction: 
