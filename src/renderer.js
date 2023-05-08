@@ -1,9 +1,9 @@
 const remote = require("@electron/remote");
-const { ipcRenderer, dialog } = require("electron");
+const { ipcRenderer } = require("electron");
 
 const win = remote.getCurrentWindow();
 
-document.onreadystatechange = (event) => {
+document.onreadystatechange = () => {
 	ipcRenderer.send("os");
 	if (document.readyState == "complete") {
 		handleWindowControls();
@@ -64,24 +64,24 @@ document.querySelector("#path-dialog input[type=text]").addEventListener("keypre
 	}
 });
 
-window.onbeforeunload = (event) => {
+window.onbeforeunload = () => {
 	win.removeAllListeners();
 };
 
 function handleWindowControls() {
-	document.getElementById("min-button").addEventListener("click", (event) => {
+	document.getElementById("min-button").addEventListener("click", () => {
 		win.minimize();
 	});
 
-	document.getElementById("max-button").addEventListener("click", (event) => {
+	document.getElementById("max-button").addEventListener("click", () => {
 		win.maximize();
 	});
 
-	document.getElementById("restore-button").addEventListener("click", (event) => {
+	document.getElementById("restore-button").addEventListener("click", () => {
 		win.unmaximize();
 	});
 
-	document.getElementById("close-button").addEventListener("click", (event) => {
+	document.getElementById("close-button").addEventListener("click", () => {
 		win.close();
 	});
 
