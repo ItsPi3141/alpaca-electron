@@ -38,6 +38,7 @@ Alpaca Electron
 - [ ] Chat history
 - [ ] Integration with Stable Diffusion
 - [ ] DuckDuckGo integration for web access
+- [ ] GPU acceleration (cuBLAS & openBLAS)
 
 ## 🎞 Demo
 
