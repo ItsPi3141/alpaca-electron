@@ -8,16 +8,12 @@
 	padding: 4px;
 	cursor: initial;
 	user-select: none;
-}
-#titlebar {
 	z-index: 9999;
+	color: #fff;
+	-webkit-app-region: drag;
 }
 .maximized #titlebar {
 	width: 100%;
-}
-#titlebar {
-	color: #fff;
-	-webkit-app-region: drag;
 }
 #titlebar #drag-region {
 	width: 100%;

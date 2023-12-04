@@ -205,7 +205,10 @@ const config = {
 
 const shell = platform === "win32" ? "powershell.exe" : "bash";
 const stripAnsi = (str) => {
-	const pattern = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"].join("|");
+	const pattern = [
+		"[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
+		"(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"
+	].join("|");
 
 	const regex = new RegExp(pattern, "g");
 	return str.replace(regex, "");
@@ -234,7 +237,10 @@ function initChat() {
 	ptyProcess.onData((res) => {
 		res = stripAnsi(res);
 		console.log(`//> ${res}`);
-		if ((res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open") || res.includes("llama_init_from_file: failed to load model")) && res.includes("main: error: failed to load model")) {
+		if (
+			(res.includes("llama_model_load: invalid model file") || res.includes("llama_model_load: failed to open") || res.includes("llama_init_from_file: failed to load model")) &&
+			res.includes("main: error: failed to load model")
+		) {
 			if (runningShell) runningShell.kill();
 			win.webContents.send("modelPathValid", { data: false });
 		} else if (res.includes("\n>") && !alpacaReady) {
@@ -244,7 +250,10 @@ function initChat() {
 			checkAVX = false;
 			win.webContents.send("ready");
 			console.log("ready!");
-		} else if (((res.startsWith("llama_model_load:") && res.includes("sampling parameters: ")) || (res.startsWith("main: interactive mode") && res.includes("sampling parameters: "))) && !checkAVX) {
+		} else if (
+			((res.startsWith("llama_model_load:") && res.includes("sampling parameters: ")) || (res.startsWith("main: interactive mode") && res.includes("sampling parameters: "))) &&
+			!checkAVX
+		) {
 			checkAVX = true;
 			console.log("checking avx compat");
 		} else if (res.match(/PS [A-Z]:.*>/) && checkAVX) {
@@ -258,7 +267,12 @@ function initChat() {
 			checkAVX = false;
 			store.set("supportsAVX2", false);
 			initChat();
-		} else if (((res.match(/PS [A-Z]:.*>/) && platform == "win32") || (res.match(/bash-[0-9]+\.?[0-9]*\$/) && platform == "darwin") || (res.match(/([a-zA-Z0-9]|_|-)+@([a-zA-Z0-9]|_|-)+:?~(\$|#)/) && platform == "linux")) && alpacaReady) {
+		} else if (
+			((res.match(/PS [A-Z]:.*>/) && platform == "win32") ||
+				(res.match(/bash-[0-9]+\.?[0-9]*\$/) && platform == "darwin") ||
+				(res.match(/([a-zA-Z0-9]|_|-)+@([a-zA-Z0-9]|_|-)+:?~(\$|#)/) && platform == "linux")) &&
+			alpacaReady
+		) {
 			restart();
 		} else if (res.includes("\n>") && alpacaReady) {
 			win.webContents.send("result", {
@@ -290,7 +304,14 @@ function initChat() {
 	const chatArgs = `-i --interactive-first -ins -r "${revPrompt}" -f "${path.resolve(__dirname, "bin", "prompts", promptFile)}"`;
 	const paramArgs = `-m "${modelPath}" -n -1 --ctx_size 2048 --temp ${params.temp} --top_k ${params.top_k} --top_p ${params.top_p} --threads ${threads} --batch_size 512 --repeat_last_n ${params.repeat_last_n} --repeat_penalty ${params.repeat_penalty} --seed ${params.seed}`;
 	if (platform == "win32") {
-		runningShell.write(`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(__dirname, "bin", supportsAVX2 ? "" : "no_avx2", "chat.exe")}" ${paramArgs} ${chatArgs}\r`);
+		runningShell.write(
+			`[System.Console]::OutputEncoding=[System.Console]::InputEncoding=[System.Text.Encoding]::UTF8; ."${path.resolve(
+				__dirname,
+				"bin",
+				supportsAVX2 ? "" : "no_avx2",
+				"chat.exe"
+			)}" ${paramArgs} ${chatArgs}\r`
+		);
 	} else if (platform == "darwin") {
 		const macArch = arch == "x64" ? "chat_mac_x64" : "chat_mac_arm64";
 		runningShell.write(`"${path.resolve(__dirname, "bin", macArch)}" ${paramArgs} ${chatArgs}\r`);
@@ -336,11 +357,11 @@ ipcMain.on("getCurrentModel", () => {
 ipcMain.on("pickFile", () => {
 	dialog
 		.showOpenDialog(win, {
-			title: "Choose Alpaca GGML model",
+			title: "Choose Alpaca GGUF model",
 			filters: [
 				{
-					name: "GGML model",
-					extensions: ["bin"]
+					name: "GGUF model",
+					extensions: ["gguf"]
 				}
 			],
 			properties: ["dontAddToRecent", "openFile"]

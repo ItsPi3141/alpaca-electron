@@ -28,7 +28,7 @@
 	"dependencies": {
 		"@electron/remote": "^2.0.9",
 		"@npmcli/fs": "^3.1.0",
-		"duck-duck-scrape": "^2.2.3",
+		"duck-duck-scrape": "^2.2.4",
 		"electron-store": "^8.1.0",
 		"express": "^4.18.2",
 		"node-pty-prebuilt-multiarch": "^0.10.1-pre.5",
