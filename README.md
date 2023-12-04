@@ -25,6 +25,10 @@ Alpaca Electron
 <p align="center"><i>Alpaca Electron is built from the ground-up to be the easiest way to chat with the alpaca AI models. No command line or compiling needed!</i></p>
 <hr>
 
+# Important:
+**Only windows is current supported for now. The new llama.cpp binaries that support GGUF have not been built for other platforms yet.**  
+If you would like to help, please makea pull request and update the binaries in `./bin`
+
 ## 📃 Features + to-do
 
 - [x] Runs locally on your computer, internet connection is not needed except when downloading models
