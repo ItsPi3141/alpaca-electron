@@ -7,3 +7,5 @@ models/*
 release-builds
 dist
 .DS_Store
+
+main.log
